@@ -1,0 +1,192 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Header } from "@/components/dashboard/header";
+import { FiltersBar } from "@/components/dashboard/filters-bar";
+import { ListingCard } from "@/components/dashboard/listing-card";
+import { EmptyState } from "@/components/dashboard/empty-state";
+import { ActiveNumberPanel } from "@/components/dashboard/active-number-panel";
+import { BuyConfirmDialog } from "@/components/dashboard/buy-confirm-dialog";
+import { countries, listings, services } from "@/lib/mock-data";
+import { Listing, Order } from "@/lib/types";
+
+function randomPhoneNumber(dialCode: string) {
+  const rest = Array.from({ length: 9 }, () => Math.floor(Math.random() * 10)).join("");
+  return `${dialCode} ${rest.slice(0, 3)} ${rest.slice(3, 6)} ${rest.slice(6, 9)}`;
+}
+
+export default function DashboardPage() {
+  const [points, setPoints] = useState(1240);
+  const [query, setQuery] = useState("");
+  const [activeService, setActiveService] = useState<string | null>(null);
+  const [sort, setSort] = useState<"price" | "success" | "stock">("price");
+
+  const [pendingListing, setPendingListing] = useState<Listing | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [purchasingId, setPurchasingId] = useState<string | null>(null);
+  const [activeOrder, setActiveOrder] = useState<Order | null>(null);
+
+  const filtered = useMemo(() => {
+    let items = listings.filter((l) => l.stock > 0);
+    if (activeService) items = items.filter((l) => l.serviceId === activeService);
+    if (query.trim()) {
+      const q = query.trim().toLowerCase();
+      items = items.filter((l) => {
+        const country = countries.find((c) => c.code === l.countryCode);
+        const service = services.find((s) => s.id === l.serviceId);
+        return (
+          country?.name.toLowerCase().includes(q) ||
+          service?.name.toLowerCase().includes(q)
+        );
+      });
+    }
+    items = [...items].sort((a, b) => {
+      if (sort === "price") return a.priceInPoints - b.priceInPoints;
+      if (sort === "success") return b.successRate - a.successRate;
+      return b.stock - a.stock;
+    });
+    return items.slice(0, 40);
+  }, [query, activeService, sort]);
+
+  function openBuyDialog(listing: Listing) {
+    setPendingListing(listing);
+    setDialogOpen(true);
+  }
+
+  function confirmPurchase() {
+    if (!pendingListing) return;
+    const listing = pendingListing;
+    setDialogOpen(false);
+    setPurchasingId(listing.id);
+
+    setTimeout(() => {
+      const country = countries.find((c) => c.code === listing.countryCode)!;
+      setPoints((p) => p - listing.priceInPoints);
+      setActiveOrder({
+        id: `ord_${Math.random().toString(36).slice(2, 8)}`,
+        listing,
+        phoneNumber: randomPhoneNumber(country.dialCode),
+        status: "waiting",
+        purchasedAt: new Date().toISOString(),
+        expiresAt: new Date(Date.now() + 1000 * 60 * 15).toISOString(),
+        pricePaid: listing.priceInPoints,
+        messages: [],
+      });
+      setPurchasingId(null);
+      setPendingListing(null);
+    }, 900);
+  }
+
+  function simulateIncomingSms() {
+    if (!activeOrder) return;
+    const service = services.find((s) => s.id === activeOrder.listing.serviceId)!;
+    const code = String(Math.floor(100000 + Math.random() * 899999));
+    setActiveOrder({
+      ...activeOrder,
+      status: "received",
+      messages: [
+        ...activeOrder.messages,
+        {
+          id: `m_${Math.random().toString(36).slice(2, 8)}`,
+          sender: service.name,
+          body: `Your ${service.name} verification code is ${code}. Do not share this code.`,
+          code,
+          receivedAt: new Date().toISOString(),
+        },
+      ],
+    });
+  }
+
+  const pendingCountry = pendingListing
+    ? countries.find((c) => c.code === pendingListing.countryCode) ?? null
+    : null;
+  const pendingService = pendingListing
+    ? services.find((s) => s.id === pendingListing.serviceId) ?? null
+    : null;
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Header points={points} />
+
+      <main className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6">
+        <div className="mb-5">
+          <h1 className="text-[19px] font-semibold tracking-tight text-foreground">
+            Get a number
+          </h1>
+          <p className="mt-0.5 text-[13px] text-muted-foreground">
+            Choose a country and service. Numbers stay hidden until purchase.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_360px]">
+          {/* Listings column */}
+          <div>
+            <div className="mb-4">
+              <FiltersBar
+                query={query}
+                onQueryChange={setQuery}
+                services={services}
+                activeService={activeService}
+                onServiceChange={setActiveService}
+                sort={sort}
+                onSortChange={setSort}
+              />
+            </div>
+
+            <motion.div layout className="space-y-2">
+              <AnimatePresence initial={false} mode="popLayout">
+                {filtered.map((listing) => {
+                  const country = countries.find((c) => c.code === listing.countryCode)!;
+                  const service = services.find((s) => s.id === listing.serviceId)!;
+                  return (
+                    <ListingCard
+                      key={listing.id}
+                      listing={listing}
+                      country={country}
+                      service={service}
+                      onBuy={() => openBuyDialog(listing)}
+                      isPurchasing={purchasingId === listing.id}
+                      disabled={purchasingId !== null}
+                    />
+                  );
+                })}
+              </AnimatePresence>
+              {filtered.length === 0 && (
+                <div className="rounded-lg border border-dashed border-border py-14 text-center text-[13px] text-muted-foreground">
+                  No numbers match your filters.
+                </div>
+              )}
+            </motion.div>
+          </div>
+
+          {/* Active number column */}
+          <div className="lg:sticky lg:top-[76px] lg:self-start">
+            <AnimatePresence mode="wait">
+              {activeOrder ? (
+                <ActiveNumberPanel
+                  key={activeOrder.id}
+                  order={activeOrder}
+                  onRelease={() => setActiveOrder(null)}
+                  onSimulateSms={simulateIncomingSms}
+                />
+              ) : (
+                <EmptyState key="empty" />
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </main>
+
+      <BuyConfirmDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        listing={pendingListing}
+        country={pendingCountry}
+        service={pendingService}
+        balance={points}
+        onConfirm={confirmPurchase}
+      />
+    </div>
+  );
+}
