@@ -3,6 +3,7 @@ const nextConfig = {
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'flagcdn.com' },
+      { protocol: 'https', hostname: 'smspva.com' },
     ],
   },
 };

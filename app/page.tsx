@@ -3,13 +3,15 @@
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "@/components/dashboard/header";
+import { ServiceCountryPicker } from "@/components/dashboard/service-country-picker";
 import { FiltersBar } from "@/components/dashboard/filters-bar";
 import { ListingCard } from "@/components/dashboard/listing-card";
 import { EmptyState } from "@/components/dashboard/empty-state";
 import { ActiveNumberPanel } from "@/components/dashboard/active-number-panel";
 import { BuyConfirmDialog } from "@/components/dashboard/buy-confirm-dialog";
 import { countries, listings, services } from "@/lib/mock-data";
-import { Listing, Order } from "@/lib/types";
+import { Listing, Order, SmspvaCountry, SmspvaService } from "@/lib/types";
+import { ArrowRight } from "lucide-react";
 
 function randomPhoneNumber(dialCode: string) {
   const rest = Array.from({ length: 9 }, () => Math.floor(Math.random() * 10)).join("");
@@ -19,7 +21,8 @@ function randomPhoneNumber(dialCode: string) {
 export default function DashboardPage() {
   const [points, setPoints] = useState(1240);
   const [query, setQuery] = useState("");
-  const [activeService, setActiveService] = useState<string | null>(null);
+  const [activeCountry, setActiveCountry] = useState<SmspvaCountry | null>(null);
+  const [activeService, setActiveService] = useState<SmspvaService | null>(null);
   const [sort, setSort] = useState<"price" | "success" | "stock">("price");
 
   const [pendingListing, setPendingListing] = useState<Listing | null>(null);
@@ -28,17 +31,16 @@ export default function DashboardPage() {
   const [activeOrder, setActiveOrder] = useState<Order | null>(null);
 
   const filtered = useMemo(() => {
-    let items = listings.filter((l) => l.stock > 0);
-    if (activeService) items = items.filter((l) => l.serviceId === activeService);
+    // Step 1 (service) is required before any results show - matches the
+    // guided "pick a service, then a country" flow.
+    if (!activeService) return [];
+    let items = listings.filter((l) => l.stock > 0 && l.serviceId === activeService.id);
+    if (activeCountry) items = items.filter((l) => l.countryCode === activeCountry.code);
     if (query.trim()) {
       const q = query.trim().toLowerCase();
       items = items.filter((l) => {
         const country = countries.find((c) => c.code === l.countryCode);
-        const service = services.find((s) => s.id === l.serviceId);
-        return (
-          country?.name.toLowerCase().includes(q) ||
-          service?.name.toLowerCase().includes(q)
-        );
+        return country?.name.toLowerCase().includes(q);
       });
     }
     items = [...items].sort((a, b) => {
@@ -47,7 +49,7 @@ export default function DashboardPage() {
       return b.stock - a.stock;
     });
     return items.slice(0, 40);
-  }, [query, activeService, sort]);
+  }, [query, activeCountry, activeService, sort]);
 
   function openBuyDialog(listing: Listing) {
     setPendingListing(listing);
@@ -60,6 +62,10 @@ export default function DashboardPage() {
     setDialogOpen(false);
     setPurchasingId(listing.id);
 
+    // TODO (go-live): replace this timeout + randomPhoneNumber with a real
+    // POST to SMSPVA's get_number endpoint. That call is what actually
+    // reserves and reveals a real number - never fetch or display it before
+    // this point, so nobody can grab a number without paying for it.
     setTimeout(() => {
       const country = countries.find((c) => c.code === listing.countryCode)!;
       setPoints((p) => p - listing.priceInPoints);
@@ -115,7 +121,7 @@ export default function DashboardPage() {
             Get a number
           </h1>
           <p className="mt-0.5 text-[13px] text-muted-foreground">
-            Choose a country and service. Numbers stay hidden until purchase.
+            Choose a service, then a country. Numbers stay hidden until purchase.
           </p>
         </div>
 
@@ -123,41 +129,59 @@ export default function DashboardPage() {
           {/* Listings column */}
           <div>
             <div className="mb-4">
-              <FiltersBar
-                query={query}
-                onQueryChange={setQuery}
+              <ServiceCountryPicker
                 services={services}
+                countries={countries}
+                listings={listings}
                 activeService={activeService}
                 onServiceChange={setActiveService}
-                sort={sort}
-                onSortChange={setSort}
+                activeCountry={activeCountry}
+                onCountryChange={setActiveCountry}
               />
             </div>
 
-            <motion.div layout className="space-y-2">
-              <AnimatePresence initial={false} mode="popLayout">
-                {filtered.map((listing) => {
-                  const country = countries.find((c) => c.code === listing.countryCode)!;
-                  const service = services.find((s) => s.id === listing.serviceId)!;
-                  return (
-                    <ListingCard
-                      key={listing.id}
-                      listing={listing}
-                      country={country}
-                      service={service}
-                      onBuy={() => openBuyDialog(listing)}
-                      isPurchasing={purchasingId === listing.id}
-                      disabled={purchasingId !== null}
-                    />
-                  );
-                })}
-              </AnimatePresence>
-              {filtered.length === 0 && (
-                <div className="rounded-lg border border-dashed border-border py-14 text-center text-[13px] text-muted-foreground">
-                  No numbers match your filters.
-                </div>
-              )}
-            </motion.div>
+            {activeService && (
+              <div className="mb-4">
+                <FiltersBar
+                  query={query}
+                  onQueryChange={setQuery}
+                  sort={sort}
+                  onSortChange={setSort}
+                />
+              </div>
+            )}
+
+            {!activeService ? (
+              <div className="flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border py-16 text-center text-muted-foreground">
+                <ArrowRight size={18} />
+                <p className="text-[13.5px]">Pick a service above to see available numbers.</p>
+              </div>
+            ) : (
+              <motion.div layout className="space-y-2">
+                <AnimatePresence initial={false} mode="popLayout">
+                  {filtered.map((listing) => {
+                    const country = countries.find((c) => c.code === listing.countryCode)!;
+                    const service = services.find((s) => s.id === listing.serviceId)!;
+                    return (
+                      <ListingCard
+                        key={listing.id}
+                        listing={listing}
+                        country={country}
+                        service={service}
+                        onBuy={() => openBuyDialog(listing)}
+                        isPurchasing={purchasingId === listing.id}
+                        disabled={purchasingId !== null}
+                      />
+                    );
+                  })}
+                </AnimatePresence>
+                {filtered.length === 0 && (
+                  <div className="rounded-lg border border-dashed border-border py-14 text-center text-[13px] text-muted-foreground">
+                    No numbers match your filters.
+                  </div>
+                )}
+              </motion.div>
+            )}
           </div>
 
           {/* Active number column */}

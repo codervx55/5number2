@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { CountryFlag } from "./country-flag";
-import { ServiceIcon } from "./service-icon";
-import { Country, Listing, Service } from "@/lib/types";
+import { SmspvaServiceIcon } from "./smspva-service-icon";
+import { Listing, SmspvaCountry, SmspvaService } from "@/lib/types";
 
 export function BuyConfirmDialog({
   open,
@@ -25,8 +25,8 @@ export function BuyConfirmDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
   listing: Listing | null;
-  country: Country | null;
-  service: Service | null;
+  country: SmspvaCountry | null;
+  service: SmspvaService | null;
   balance: number;
   onConfirm: () => void;
 }) {
@@ -44,8 +44,8 @@ export function BuyConfirmDialog({
         </DialogHeader>
 
         <div className="mb-4 flex items-center gap-3 rounded-md border border-border bg-muted/40 p-3">
-          <CountryFlag code={country.code} size={26} />
-          <ServiceIcon service={service} size={34} />
+          <CountryFlag isoCode={country.isoCode} size={26} />
+          <SmspvaServiceIcon service={service} size={34} />
           <div className="min-w-0 flex-1">
             <p className="text-[13.5px] font-medium text-foreground">{service.name}</p>
             <p className="text-[12px] text-muted-foreground">{country.name}</p>

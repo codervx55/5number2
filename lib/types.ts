@@ -10,6 +10,22 @@ export interface Service {
   color: string; // tailwind-safe hex for icon badge background
 }
 
+// Real SMSPVA provider catalog (see lib/smspva-countries.ts / lib/smspva-services.ts)
+export interface SmspvaCountry {
+  code: string; // SMSPVA "country" API param, e.g. "UK", "US"
+  isoCode: string; // lowercase ISO 3166-1 alpha-2, for flagcdn.com
+  name: string;
+  dialCode: string;
+}
+
+export interface SmspvaService {
+  id: string; // slug, used as a stable React key / URL segment
+  code: string; // SMSPVA "service" API param, e.g. "opt29"
+  name: string;
+  logoUrl: string; // real logo hosted by SMSPVA
+  hasCustomLogo: boolean; // false = SMSPVA has no distinct icon, use initials badge
+}
+
 export interface Listing {
   id: string;
   countryCode: string;

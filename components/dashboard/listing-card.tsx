@@ -3,9 +3,9 @@
 import { motion } from "framer-motion";
 import { Coins, ShieldCheck, Boxes, Loader2 } from "lucide-react";
 import { CountryFlag } from "./country-flag";
-import { ServiceIcon } from "./service-icon";
+import { SmspvaServiceIcon } from "./smspva-service-icon";
 import { Button } from "@/components/ui/button";
-import { Country, Listing, Service } from "@/lib/types";
+import { Listing, SmspvaCountry, SmspvaService } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 export function ListingCard({
@@ -17,8 +17,8 @@ export function ListingCard({
   disabled,
 }: {
   listing: Listing;
-  country: Country;
-  service: Service;
+  country: SmspvaCountry;
+  service: SmspvaService;
   onBuy: () => void;
   isPurchasing?: boolean;
   disabled?: boolean;
@@ -39,7 +39,7 @@ export function ListingCard({
     >
       {/* Country */}
       <div className="flex min-w-[92px] items-center gap-2 sm:min-w-[130px]">
-        <CountryFlag code={country.code} size={22} />
+        <CountryFlag isoCode={country.isoCode} size={22} />
         <div className="min-w-0">
           <p className="truncate text-[13px] font-medium text-foreground">{country.name}</p>
           <p className="text-[11.5px] text-muted-foreground">{country.dialCode}</p>
@@ -50,7 +50,7 @@ export function ListingCard({
 
       {/* Service */}
       <div className="flex min-w-0 flex-1 items-center gap-2.5">
-        <ServiceIcon service={service} size={30} />
+        <SmspvaServiceIcon service={service} size={30} />
         <div className="min-w-0">
           <p className="truncate text-[13.5px] font-medium text-foreground">{service.name}</p>
           <p className="truncate text-[11.5px] text-muted-foreground">

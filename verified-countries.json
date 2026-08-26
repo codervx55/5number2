@@ -1,0 +1,3174 @@
+{
+  "supported": [
+    {
+      "code": "AL",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "AL"
+      }
+    },
+    {
+      "code": "AM",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "AM"
+      }
+    },
+    {
+      "code": "AR",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 18,
+        "total": 18,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "AR"
+      }
+    },
+    {
+      "code": "AT",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "AT"
+      }
+    },
+    {
+      "code": "AU",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 104,
+        "total": 104,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "AU"
+      }
+    },
+    {
+      "code": "BA",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "BA"
+      }
+    },
+    {
+      "code": "BD",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "BD"
+      }
+    },
+    {
+      "code": "BE",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 23,
+        "total": 23,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "BE"
+      }
+    },
+    {
+      "code": "BG",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 54,
+        "total": 54,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "BG"
+      }
+    },
+    {
+      "code": "BO",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 14,
+        "total": 14,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "BO"
+      }
+    },
+    {
+      "code": "BR",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 53,
+        "total": 53,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "BR"
+      }
+    },
+    {
+      "code": "CA",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 82,
+        "total": 82,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "CA"
+      }
+    },
+    {
+      "code": "CH",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 45,
+        "total": 45,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "CH"
+      }
+    },
+    {
+      "code": "CL",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "CL"
+      }
+    },
+    {
+      "code": "CM",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 25,
+        "total": 25,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "CM"
+      }
+    },
+    {
+      "code": "CO",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 70,
+        "total": 70,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "CO"
+      }
+    },
+    {
+      "code": "CR",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 109,
+        "total": 109,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "CR"
+      }
+    },
+    {
+      "code": "CY",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "CY"
+      }
+    },
+    {
+      "code": "CZ",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 544,
+        "total": 544,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "CZ"
+      }
+    },
+    {
+      "code": "DE",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 876,
+        "total": 876,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "DE"
+      }
+    },
+    {
+      "code": "DK",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 136,
+        "total": 136,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "DK"
+      }
+    },
+    {
+      "code": "DO",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 57,
+        "total": 57,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "DO"
+      }
+    },
+    {
+      "code": "EE",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "EE"
+      }
+    },
+    {
+      "code": "EG",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "EG"
+      }
+    },
+    {
+      "code": "ES",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 649,
+        "total": 649,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "ES"
+      }
+    },
+    {
+      "code": "FI",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "FI"
+      }
+    },
+    {
+      "code": "FR",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 105,
+        "total": 105,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "FR"
+      }
+    },
+    {
+      "code": "GE",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 3,
+        "total": 3,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "GE"
+      }
+    },
+    {
+      "code": "GI",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "GI"
+      }
+    },
+    {
+      "code": "GR",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 41,
+        "total": 41,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "GR"
+      }
+    },
+    {
+      "code": "HK",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "HK"
+      }
+    },
+    {
+      "code": "HR",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 12,
+        "total": 12,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "HR"
+      }
+    },
+    {
+      "code": "HT",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "HT"
+      }
+    },
+    {
+      "code": "HU",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 26,
+        "total": 26,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "HU"
+      }
+    },
+    {
+      "code": "ID",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 189,
+        "total": 189,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "ID"
+      }
+    },
+    {
+      "code": "IE",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 63,
+        "total": 63,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "IE"
+      }
+    },
+    {
+      "code": "IL",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "IL"
+      }
+    },
+    {
+      "code": "IT",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 65,
+        "total": 65,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "IT"
+      }
+    },
+    {
+      "code": "JP",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 54,
+        "total": 54,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "JP"
+      }
+    },
+    {
+      "code": "KE",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "KE"
+      }
+    },
+    {
+      "code": "KG",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "KG"
+      }
+    },
+    {
+      "code": "KH",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "KH"
+      }
+    },
+    {
+      "code": "KZ",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "KZ"
+      }
+    },
+    {
+      "code": "LT",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "LT"
+      }
+    },
+    {
+      "code": "LV",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 54,
+        "total": 54,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "LV"
+      }
+    },
+    {
+      "code": "MA",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "MA"
+      }
+    },
+    {
+      "code": "MD",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "MD"
+      }
+    },
+    {
+      "code": "MK",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "MK"
+      }
+    },
+    {
+      "code": "MT",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "MT"
+      }
+    },
+    {
+      "code": "MX",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 116,
+        "total": 116,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "MX"
+      }
+    },
+    {
+      "code": "MY",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 9,
+        "total": 9,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "MY"
+      }
+    },
+    {
+      "code": "NG",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "NG"
+      }
+    },
+    {
+      "code": "NL",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 288,
+        "total": 288,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "NL"
+      }
+    },
+    {
+      "code": "NO",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "NO"
+      }
+    },
+    {
+      "code": "NZ",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "NZ"
+      }
+    },
+    {
+      "code": "PH",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 121,
+        "total": 121,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "PH"
+      }
+    },
+    {
+      "code": "PK",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "PK"
+      }
+    },
+    {
+      "code": "PL",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 138,
+        "total": 138,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "PL"
+      }
+    },
+    {
+      "code": "PT",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 98,
+        "total": 98,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "PT"
+      }
+    },
+    {
+      "code": "PY",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 96,
+        "total": 96,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "PY"
+      }
+    },
+    {
+      "code": "RO",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 149,
+        "total": 149,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "RO"
+      }
+    },
+    {
+      "code": "RS",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "RS"
+      }
+    },
+    {
+      "code": "SE",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 12,
+        "total": 12,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "SE"
+      }
+    },
+    {
+      "code": "SG",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "SG"
+      }
+    },
+    {
+      "code": "SI",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "SI"
+      }
+    },
+    {
+      "code": "SK",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "SK"
+      }
+    },
+    {
+      "code": "TH",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "TH"
+      }
+    },
+    {
+      "code": "TR",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "TR"
+      }
+    },
+    {
+      "code": "TZ",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "TZ"
+      }
+    },
+    {
+      "code": "UA",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 191,
+        "total": 191,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "UA"
+      }
+    },
+    {
+      "code": "UK",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 676,
+        "total": 676,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "UK"
+      }
+    },
+    {
+      "code": "US",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 221,
+        "total": 221,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "US"
+      }
+    },
+    {
+      "code": "VN",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "VN"
+      }
+    },
+    {
+      "code": "ZA",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 87,
+        "total": 87,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "ZA"
+      }
+    }
+  ],
+  "allResults": [
+    {
+      "code": "AD",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "AE",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "AF",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "AG",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "AI",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "AL",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "AL"
+      }
+    },
+    {
+      "code": "AM",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "AM"
+      }
+    },
+    {
+      "code": "AO",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "AR",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 18,
+        "total": 18,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "AR"
+      }
+    },
+    {
+      "code": "AS",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "AT",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "AT"
+      }
+    },
+    {
+      "code": "AU",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 104,
+        "total": 104,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "AU"
+      }
+    },
+    {
+      "code": "AW",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "AX",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "AZ",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "BA",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "BA"
+      }
+    },
+    {
+      "code": "BB",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "BD",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "BD"
+      }
+    },
+    {
+      "code": "BE",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 23,
+        "total": 23,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "BE"
+      }
+    },
+    {
+      "code": "BF",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "BG",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 54,
+        "total": 54,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "BG"
+      }
+    },
+    {
+      "code": "BH",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "BI",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "BJ",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "BL",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "BM",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "BN",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "BO",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 14,
+        "total": 14,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "BO"
+      }
+    },
+    {
+      "code": "BQ",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "BR",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 53,
+        "total": 53,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "BR"
+      }
+    },
+    {
+      "code": "BS",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "BT",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "BV",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "BW",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "BY",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "BZ",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "CA",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 82,
+        "total": 82,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "CA"
+      }
+    },
+    {
+      "code": "CC",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "CD",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "CF",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "CG",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "CH",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 45,
+        "total": 45,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "CH"
+      }
+    },
+    {
+      "code": "CI",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "CK",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "CL",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "CL"
+      }
+    },
+    {
+      "code": "CM",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 25,
+        "total": 25,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "CM"
+      }
+    },
+    {
+      "code": "CN",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "CO",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 70,
+        "total": 70,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "CO"
+      }
+    },
+    {
+      "code": "CR",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 109,
+        "total": 109,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "CR"
+      }
+    },
+    {
+      "code": "CU",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "CV",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "CW",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "CX",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "CY",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "CY"
+      }
+    },
+    {
+      "code": "CZ",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 544,
+        "total": 544,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "CZ"
+      }
+    },
+    {
+      "code": "DE",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 876,
+        "total": 876,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "DE"
+      }
+    },
+    {
+      "code": "DJ",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "DK",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 136,
+        "total": 136,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "DK"
+      }
+    },
+    {
+      "code": "DM",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "DO",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 57,
+        "total": 57,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "DO"
+      }
+    },
+    {
+      "code": "DZ",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "EC",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "EE",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "EE"
+      }
+    },
+    {
+      "code": "EG",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "EG"
+      }
+    },
+    {
+      "code": "EH",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "ER",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "ES",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 649,
+        "total": 649,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "ES"
+      }
+    },
+    {
+      "code": "ET",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "FI",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "FI"
+      }
+    },
+    {
+      "code": "FJ",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "FK",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "FM",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "FO",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "FR",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 105,
+        "total": 105,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "FR"
+      }
+    },
+    {
+      "code": "GA",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "GB",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "GD",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "GE",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 3,
+        "total": 3,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "GE"
+      }
+    },
+    {
+      "code": "GF",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "GG",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "GH",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "GI",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "GI"
+      }
+    },
+    {
+      "code": "GL",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "GM",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "GN",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "GP",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "GQ",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "GR",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 41,
+        "total": 41,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "GR"
+      }
+    },
+    {
+      "code": "GS",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "GT",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "GU",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "GW",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "GY",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "HK",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "HK"
+      }
+    },
+    {
+      "code": "HM",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "HN",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "HR",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 12,
+        "total": 12,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "HR"
+      }
+    },
+    {
+      "code": "HT",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "HT"
+      }
+    },
+    {
+      "code": "HU",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 26,
+        "total": 26,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "HU"
+      }
+    },
+    {
+      "code": "ID",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 189,
+        "total": 189,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "ID"
+      }
+    },
+    {
+      "code": "IE",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 63,
+        "total": 63,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "IE"
+      }
+    },
+    {
+      "code": "IL",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "IL"
+      }
+    },
+    {
+      "code": "IM",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "IN",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "IO",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "IQ",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "IR",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "IS",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "IT",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 65,
+        "total": 65,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "IT"
+      }
+    },
+    {
+      "code": "JE",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "JM",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "JO",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "JP",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 54,
+        "total": 54,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "JP"
+      }
+    },
+    {
+      "code": "KE",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "KE"
+      }
+    },
+    {
+      "code": "KG",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "KG"
+      }
+    },
+    {
+      "code": "KH",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "KH"
+      }
+    },
+    {
+      "code": "KI",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "KM",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "KN",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "KP",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "KR",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "KW",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "KY",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "KZ",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "KZ"
+      }
+    },
+    {
+      "code": "LA",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "LB",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "LC",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "LI",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "LK",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "LR",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "LS",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "LT",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "LT"
+      }
+    },
+    {
+      "code": "LU",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "LV",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 54,
+        "total": 54,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "LV"
+      }
+    },
+    {
+      "code": "LY",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "MA",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "MA"
+      }
+    },
+    {
+      "code": "MC",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "MD",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "MD"
+      }
+    },
+    {
+      "code": "ME",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "MF",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "MG",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "MH",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "MK",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "MK"
+      }
+    },
+    {
+      "code": "ML",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "MM",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "MN",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "MO",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "MP",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "MQ",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "MR",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "MS",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "MT",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "MT"
+      }
+    },
+    {
+      "code": "MU",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "MV",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "MW",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "MX",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 116,
+        "total": 116,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "MX"
+      }
+    },
+    {
+      "code": "MY",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 9,
+        "total": 9,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "MY"
+      }
+    },
+    {
+      "code": "MZ",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "NA",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "NC",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "NE",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "NF",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "NG",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "NG"
+      }
+    },
+    {
+      "code": "NI",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "NL",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 288,
+        "total": 288,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "NL"
+      }
+    },
+    {
+      "code": "NO",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "NO"
+      }
+    },
+    {
+      "code": "NP",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "NR",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "NU",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "NZ",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "NZ"
+      }
+    },
+    {
+      "code": "OM",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "PA",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "PE",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "PF",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "PG",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "PH",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 121,
+        "total": 121,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "PH"
+      }
+    },
+    {
+      "code": "PK",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "PK"
+      }
+    },
+    {
+      "code": "PL",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 138,
+        "total": 138,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "PL"
+      }
+    },
+    {
+      "code": "PM",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "PN",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "PR",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "PS",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "PT",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 98,
+        "total": 98,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "PT"
+      }
+    },
+    {
+      "code": "PW",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "PY",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 96,
+        "total": 96,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "PY"
+      }
+    },
+    {
+      "code": "QA",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "RE",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "RO",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 149,
+        "total": 149,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "RO"
+      }
+    },
+    {
+      "code": "RS",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "RS"
+      }
+    },
+    {
+      "code": "RU",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "RW",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "SA",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "SB",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "SC",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "SD",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "SE",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 12,
+        "total": 12,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "SE"
+      }
+    },
+    {
+      "code": "SG",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "SG"
+      }
+    },
+    {
+      "code": "SH",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "SI",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "SI"
+      }
+    },
+    {
+      "code": "SJ",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "SK",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "SK"
+      }
+    },
+    {
+      "code": "SL",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "SM",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "SN",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "SO",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "SR",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "SS",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "ST",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "SV",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "SX",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "SY",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "SZ",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "TC",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "TD",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "TF",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "TG",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "TH",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "TH"
+      }
+    },
+    {
+      "code": "TJ",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "TK",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "TL",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "TM",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "TN",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "TO",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "TR",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "TR"
+      }
+    },
+    {
+      "code": "TT",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "TV",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "TW",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "TZ",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "TZ"
+      }
+    },
+    {
+      "code": "UA",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 191,
+        "total": 191,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "UA"
+      }
+    },
+    {
+      "code": "UG",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "UK",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 676,
+        "total": 676,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "UK"
+      }
+    },
+    {
+      "code": "US",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 221,
+        "total": 221,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "US"
+      }
+    },
+    {
+      "code": "UY",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "UZ",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "VA",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "VC",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "VE",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "VG",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "VI",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "VN",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 0,
+        "total": 0,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "VN"
+      }
+    },
+    {
+      "code": "VU",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "WF",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "WS",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "YE",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "YT",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "ZA",
+      "supported": true,
+      "response": {
+        "service": "opt29",
+        "online": 87,
+        "total": 87,
+        "forTotal": 0,
+        "forOnline": 0,
+        "country": "ZA"
+      }
+    },
+    {
+      "code": "ZM",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    },
+    {
+      "code": "ZW",
+      "supported": false,
+      "response": {
+        "response": "error",
+        "error_msg": "UNKNOWN SERVICE OR COUNTRY"
+      }
+    }
+  ]
+}

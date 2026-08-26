@@ -2,7 +2,7 @@
 
 import { Header } from "@/components/dashboard/header";
 import { CountryFlag } from "@/components/dashboard/country-flag";
-import { ServiceIcon } from "@/components/dashboard/service-icon";
+import { SmspvaServiceIcon } from "@/components/dashboard/smspva-service-icon";
 import { Badge } from "@/components/ui/badge";
 import { mockOrders, countries, services } from "@/lib/mock-data";
 import { formatRelativeTime } from "@/lib/utils";
@@ -54,8 +54,8 @@ export default function NumbersPage() {
                   className="flex flex-col gap-3 rounded-lg border border-border bg-white p-4 shadow-card sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div className="flex items-center gap-3">
-                    <CountryFlag code={country.code} size={22} />
-                    <ServiceIcon service={service} size={32} />
+                    <CountryFlag isoCode={country.isoCode} size={22} />
+                    <SmspvaServiceIcon service={service} size={32} />
                     <div>
                       <p className="text-[13.5px] font-medium text-foreground">{service.name}</p>
                       <p className="font-mono text-[12px] text-muted-foreground">

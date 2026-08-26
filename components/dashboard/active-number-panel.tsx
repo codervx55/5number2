@@ -5,7 +5,7 @@ import { Copy, RefreshCcw, Check, Clock, Inbox, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Order } from "@/lib/types";
 import { CountryFlag } from "./country-flag";
-import { ServiceIcon } from "./service-icon";
+import { SmspvaServiceIcon } from "./smspva-service-icon";
 import { countries, services } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
 import { formatRelativeTime } from "@/lib/utils";
@@ -52,8 +52,8 @@ export function ActiveNumberPanel({
       {/* Header */}
       <div className="flex items-start justify-between gap-3 border-b border-border p-4">
         <div className="flex items-center gap-2.5">
-          <CountryFlag code={country.code} size={24} />
-          <ServiceIcon service={service} size={32} />
+          <CountryFlag isoCode={country.isoCode} size={24} />
+          <SmspvaServiceIcon service={service} size={32} />
           <div>
             <p className="text-[13.5px] font-medium text-foreground">{service.name}</p>
             <p className="text-[11.5px] text-muted-foreground">{country.name}</p>

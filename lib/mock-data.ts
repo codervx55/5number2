@@ -1,46 +1,10 @@
-import { Country, Service, Listing, Order } from "./types";
+import { Listing, Order } from "./types";
+import { SMSPVA_COUNTRIES } from "./smspva-countries";
+import { SMSPVA_SERVICES } from "./smspva-services";
 
-export const countries: Country[] = [
-  { code: "us", name: "United States", dialCode: "+1" },
-  { code: "gb", name: "United Kingdom", dialCode: "+44" },
-  { code: "ng", name: "Nigeria", dialCode: "+234" },
-  { code: "in", name: "India", dialCode: "+91" },
-  { code: "id", name: "Indonesia", dialCode: "+62" },
-  { code: "br", name: "Brazil", dialCode: "+55" },
-  { code: "de", name: "Germany", dialCode: "+49" },
-  { code: "fr", name: "France", dialCode: "+33" },
-  { code: "ca", name: "Canada", dialCode: "+1" },
-  { code: "ph", name: "Philippines", dialCode: "+63" },
-  { code: "za", name: "South Africa", dialCode: "+27" },
-  { code: "pl", name: "Poland", dialCode: "+48" },
-  { code: "mx", name: "Mexico", dialCode: "+52" },
-  { code: "vn", name: "Vietnam", dialCode: "+84" },
-  { code: "ru", name: "Russia", dialCode: "+7" },
-  { code: "es", name: "Spain", dialCode: "+34" },
-  { code: "it", name: "Italy", dialCode: "+39" },
-  { code: "nl", name: "Netherlands", dialCode: "+31" },
-  { code: "tr", name: "Turkey", dialCode: "+90" },
-  { code: "ke", name: "Kenya", dialCode: "+254" },
-];
-
-export const services: Service[] = [
-  { id: "instagram", name: "Instagram", color: "#E1306C" },
-  { id: "whatsapp", name: "WhatsApp", color: "#25D366" },
-  { id: "telegram", name: "Telegram", color: "#229ED9" },
-  { id: "facebook", name: "Facebook", color: "#1877F2" },
-  { id: "tiktok", name: "TikTok", color: "#111111" },
-  { id: "twitter", name: "X / Twitter", color: "#000000" },
-  { id: "discord", name: "Discord", color: "#5865F2" },
-  { id: "google", name: "Google", color: "#4285F4" },
-  { id: "amazon", name: "Amazon", color: "#FF9900" },
-  { id: "tinder", name: "Tinder", color: "#FE3C72" },
-  { id: "snapchat", name: "Snapchat", color: "#FFFC00" },
-  { id: "linkedin", name: "LinkedIn", color: "#0A66C2" },
-  { id: "microsoft", name: "Microsoft", color: "#00A4EF" },
-  { id: "apple", name: "Apple", color: "#555555" },
-  { id: "uber", name: "Uber", color: "#000000" },
-  { id: "paypal", name: "PayPal", color: "#003087" },
-];
+// Real provider catalog — country/service codes go straight into SMSPVA API calls.
+export const countries = SMSPVA_COUNTRIES;
+export const services = SMSPVA_SERVICES;
 
 // Deterministic pseudo-random generator so mock data is stable across renders
 function seeded(seed: number) {
@@ -51,14 +15,51 @@ function seeded(seed: number) {
   };
 }
 
+/**
+ * TODO (go-live): this function currently fabricates price/stock/successRate.
+ * Replace it with real calls per country+service pair:
+ *   - stock  -> GET https://smspva.com/priemnik.php?metod=get_count_new&service={code}&country={code}&apikey={key}
+ *   - price  -> GET https://smspva.com/priemnik.php?metod=get_service_price&service={code}&country={code}&apikey={key}
+ * Cache the combined result server-side (e.g. every 5-10 min) instead of calling
+ * on every page load - SMSPVA allows up to 100 connections/sec but there's no
+ * reason to hit it per-visitor. The number itself is only ever requested at
+ * purchase time via get_number, never before - that's what keeps it hidden.
+ */
+// Services that a real provider almost always has stock for in every
+// country - major global platforms. Everything else is a niche/regional
+// service and realistically only covers a handful of countries.
+const GLOBAL_SERVICE_IDS = new Set([
+  "whatsapp",
+  "telegram",
+  "google-youtube-gmail",
+  "facebook",
+  "instagram-threads",
+  "tiktok",
+  "discord",
+  "amazon",
+  "netflix",
+  "paypal-ebay",
+  "steam",
+  "apple",
+  "microsoft-azure-bing-skype-etc",
+  "signal",
+  "viber",
+  "x-twitter",
+  "linkedin",
+]);
+
 function buildListings(): Listing[] {
   const rand = seeded(42);
   const listings: Listing[] = [];
   let idx = 0;
   for (const country of countries) {
     for (const service of services) {
-      // Not every country/service pair exists — skip some for realism
-      if (rand() < 0.28) continue;
+      const isGlobal = GLOBAL_SERVICE_IDS.has(service.id);
+      // Global platforms: in stock almost everywhere (occasional real outage).
+      // Niche/regional services: only a handful of countries carry them.
+      // Live version: skip when get_count_new returns total === 0.
+      const skipChance = isGlobal ? 0.04 : 0.94;
+      if (rand() < skipChance) continue;
       idx += 1;
       const price = Math.round(8 + rand() * 42);
       const successRate = Math.round(78 + rand() * 21);
