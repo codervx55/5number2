@@ -1,0 +1,83 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id            String        @id
+  email         String        @unique
+  walletBalance Decimal       @default(0) @db.Decimal(10, 2)
+  createdAt     DateTime      @default(now())
+  orders        Order[]
+  transactions  Transaction[]
+  @@map("five_number_users")
+}
+
+model Order {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id])
+  platform        String
+  country         String
+  price           Decimal   @db.Decimal(10, 2)
+  status          String
+  provider        String
+  providerOrderId String
+  phoneNumber     String
+  code            String?
+  expiresAt       DateTime
+  createdAt       DateTime  @default(now())
+  orderType       String    @default("activation")
+  rentHours       Int?
+  messages        OrderMessage[]
+  @@index([userId])
+  @@map("five_number_orders")
+}
+
+model OrderMessage {
+  id         String   @id @default(cuid())
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id])
+  sender     String
+  text       String
+  code       String?
+  receivedAt DateTime @default(now())
+  @@index([orderId])
+  @@map("five_number_order_messages")
+}
+
+model Transaction {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  type      String
+  method    String
+  label     String
+  amount    Decimal  @db.Decimal(10, 2)
+  reference String?  @unique
+  createdAt DateTime @default(now())
+  @@index([userId])
+  @@map("five_number_transactions")
+}
+
+model SiteStats {
+  id         Int @id @default(1)
+  totalViews Int @default(0)
+  @@map("five_number_site_stats")
+}
+
+model VerificationCode {
+  id        String   @id @default(cuid())
+  email     String
+  code      String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  @@index([email])
+  @@map("five_number_verification_codes")
+}
