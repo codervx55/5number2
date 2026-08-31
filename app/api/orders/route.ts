@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getAuthenticatedUser } from "@/lib/supabase/server";
 import { SMSPVA_SERVICES } from "@/lib/smspva-services";
 import { SMSPVA_COUNTRIES } from "@/lib/smspva-countries";
-import { getPrice, getStock, requestNumber } from "@/lib/smspva";
+import { getAllPricesForService, getStock, requestNumber } from "@/lib/smspva";
 import { applyMargin } from "@/lib/pricing";
 
 const ACTIVATION_TTL_MS = 1000 * 60 * 15; // 15 minutes, matches old mock behavior
@@ -51,10 +51,19 @@ export async function POST(req: NextRequest) {
   try {
     // Re-verify live price + stock right before charging - protects against
     // stale prices and against buying something that just sold out.
-    const [stock, providerPrice] = await Promise.all([
+    // IMPORTANT: use the SAME cheapest-operator price source as /api/listings
+    // (getAllPricesForService), not the old per-country getPrice(), or the
+    // buy-check compares against a different (higher) number than the card
+    // shows - which shows up as a false "Insufficient balance".
+    const [stock, priceMap] = await Promise.all([
       getStock(service.code, country.code),
-      getPrice(service.code, country.code),
+      getAllPricesForService(service.code),
     ]);
+
+    const providerPrice = priceMap?.get(country.code.toUpperCase());
+    if (providerPrice === undefined || !Number.isFinite(providerPrice)) {
+      return NextResponse.json({ error: "Price unavailable, try again." }, { status: 502 });
+    }
 
     // Must use the same applyMargin() as /api/listings, or the user gets
     // charged a different amount from the price shown on the card.
