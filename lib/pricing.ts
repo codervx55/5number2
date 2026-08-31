@@ -10,8 +10,8 @@
  * apart and users get charged something different from what they saw.
  */
 
-/** Our margin over the provider's wholesale price. 0.40 = 40% markup. */
-export const MARGIN = 0.4;
+/** Our margin over the provider's wholesale price. 0.25 = 25% markup. */
+export const MARGIN = 0.25;
 
 /**
  * Converts a provider (wholesale) price into the retail price we charge.
