@@ -35,6 +35,8 @@ model Order {
   createdAt       DateTime  @default(now())
   orderType       String    @default("activation")
   rentHours       Int?
+  rentDtype       String?   // "week" | "month" - rental duration unit (rent orders only)
+  rentDcount      Int?      // how many weeks/months (rent orders only)
   messages        OrderMessage[]
   @@index([userId])
   @@map("five_number_orders")

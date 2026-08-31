@@ -54,3 +54,74 @@
     border-radius: 999px;
   }
 }
+
+
+/* ==========================================================================
+   Landing page (/) — scoped under .lp so nothing leaks into the app UI.
+   Light, to match the dashboard chrome rather than fighting it.
+   ========================================================================== */
+
+.lp-display {
+  font-family: var(--font-display), Inter, system-ui, sans-serif;
+  letter-spacing: -0.032em;
+}
+
+/* Seamless marquee. The track holds the content twice, so shifting it by
+   exactly -50% lands on an identical frame and the loop is invisible. */
+@keyframes lp-marquee-left {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+@keyframes lp-marquee-right {
+  from { transform: translate3d(-50%, 0, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+.lp-marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+.lp-marquee-left  { animation: lp-marquee-left  46s linear infinite; }
+.lp-marquee-right { animation: lp-marquee-right 58s linear infinite; }
+
+/* Pausing on hover makes the strip feel responsive rather than decorative. */
+.lp-marquee:hover .lp-marquee-track { animation-play-state: paused; }
+
+/* A message sliding into the inbox. */
+@keyframes lp-msg-in {
+  from { opacity: 0; transform: translate3d(0, 14px, 0) scale(0.985); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+.lp-msg-in { animation: lp-msg-in 0.42s cubic-bezier(0.22, 0.68, 0.24, 1) both; }
+
+/* Brief highlight on the newest message so the eye goes to it. */
+@keyframes lp-flash {
+  0%   { background-color: hsl(var(--accent)); }
+  100% { background-color: #ffffff; }
+}
+.lp-flash { animation: lp-flash 1.5s ease-out both; }
+
+@keyframes lp-blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.3; }
+}
+.lp-blink { animation: lp-blink 1.6s ease-in-out infinite; }
+
+/* Soft rise for the hero panel on first paint - one orchestrated moment,
+   not a fade-up on every section. */
+@keyframes lp-rise {
+  from { opacity: 0; transform: translate3d(0, 18px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.lp-rise { animation: lp-rise 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-marquee-track,
+  .lp-msg-in,
+  .lp-flash,
+  .lp-blink,
+  .lp-rise {
+    animation: none !important;
+  }
+  .lp-marquee-track { transform: none !important; }
+}

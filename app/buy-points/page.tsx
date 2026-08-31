@@ -1,160 +1,290 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Coins, CreditCard, Sparkles, ShieldCheck, Loader2, Check } from "lucide-react";
+import { Suspense, useEffect, useState } from "react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { Building2, Check, CreditCard, Loader2, Smartphone } from "lucide-react";
 import { Header } from "@/components/dashboard/header";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { pointPackages } from "@/lib/mock-data";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-export default function BuyPointsPage() {
-  const [points, setPoints] = useState(1240);
-  const [selected, setSelected] = useState(pointPackages[2].id);
-  const [purchasing, setPurchasing] = useState(false);
-  const [success, setSuccess] = useState(false);
+type Channel = "card" | "bank_transfer" | "ussd";
 
-  const pkg = pointPackages.find((p) => p.id === selected)!;
+const CHANNELS: { id: Channel; label: string; hint: string; icon: typeof CreditCard }[] = [
+  { id: "card", label: "Card", hint: "Debit or credit card", icon: CreditCard },
+  { id: "bank_transfer", label: "Bank transfer", hint: "Pay from your bank app", icon: Building2 },
+  { id: "ussd", label: "USSD", hint: "Dial a code on your phone", icon: Smartphone },
+];
 
-  function handlePurchase() {
-    setPurchasing(true);
-    setSuccess(false);
-    setTimeout(() => {
-      setPoints((p) => p + pkg.points + pkg.bonus);
-      setPurchasing(false);
-      setSuccess(true);
-      setTimeout(() => setSuccess(false), 2400);
-    }, 1100);
+const PRESETS = [5, 10, 20, 50];
+const MIN_USD = 1;
+
+function BuyPointsPageInner() {
+  const searchParams = useSearchParams();
+  const returnedRef = searchParams.get("ref");
+
+  const [balance, setBalance] = useState<number | null>(null);
+  const [authError, setAuthError] = useState(false);
+
+  const [amount, setAmount] = useState("10");
+  const [channel, setChannel] = useState<Channel>("card");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Set when the user comes back from Paystack - we poll until the webhook
+  // credits them, since the redirect can arrive before the payment settles.
+  const [confirming, setConfirming] = useState(false);
+  const [credited, setCredited] = useState<number | null>(null);
+
+  const amountUsd = Number(amount);
+  const valid = Number.isFinite(amountUsd) && amountUsd >= MIN_USD;
+
+  async function loadBalance() {
+    try {
+      const res = await fetch("/api/me");
+      if (res.status === 401) {
+        setAuthError(true);
+        return;
+      }
+      if (res.ok) {
+        const me = await res.json();
+        setBalance(me.walletBalance);
+      }
+    } catch (err) {
+      console.error("Failed to load balance:", err);
+    }
+  }
+
+  useEffect(() => {
+    loadBalance();
+  }, []);
+
+  // --- Poll for confirmation after returning from Paystack ---------------
+  useEffect(() => {
+    if (!returnedRef) return;
+    let cancelled = false;
+    let attempts = 0;
+    setConfirming(true);
+
+    async function poll() {
+      if (cancelled) return;
+      attempts++;
+      try {
+        const res = await fetch(`/api/wallet/topup/status?ref=${returnedRef}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.status === "credited") {
+            setCredited(data.amount);
+            setConfirming(false);
+            loadBalance();
+            return;
+          }
+        }
+      } catch (err) {
+        console.error("Status poll failed:", err);
+      }
+
+      // Give up after ~60s of polling. Bank transfers can take longer than
+      // that, so we tell the user it'll land rather than claiming failure.
+      if (attempts < 20 && !cancelled) {
+        setTimeout(poll, 3000);
+      } else if (!cancelled) {
+        setConfirming(false);
+      }
+    }
+
+    poll();
+    return () => {
+      cancelled = true;
+    };
+  }, [returnedRef]);
+
+  async function startPayment() {
+    if (!valid) return;
+    setSubmitting(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/wallet/topup/paystack/init", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amountUsd, channel }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? "Could not start payment.");
+        return;
+      }
+      // Hand off to Paystack's hosted checkout.
+      window.location.href = data.authorizationUrl;
+    } catch (err) {
+      console.error("Payment start failed:", err);
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  if (authError) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background px-4">
+        <div className="text-center">
+          <p className="text-[15px] font-medium text-foreground">You need to sign in first.</p>
+          <Link href="/login">
+            <Button className="mt-4">Log in</Button>
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <Header points={points} />
+      <Header points={balance ?? 0} />
 
-      <main className="mx-auto max-w-[1000px] px-4 py-8 sm:px-6">
-        <div className="mb-7">
-          <h1 className="text-[19px] font-semibold tracking-tight text-foreground">Buy points</h1>
+      <main className="mx-auto max-w-[560px] px-4 py-8 sm:px-6">
+        <div className="mb-6">
+          <h1 className="text-[19px] font-semibold tracking-tight text-foreground">Add funds</h1>
           <p className="mt-0.5 text-[13px] text-muted-foreground">
-            Points are used to purchase numbers. They never expire.
+            Top up your wallet to buy and rent numbers.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_320px]">
-          <div>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {pointPackages.map((p, i) => {
-                const isSelected = selected === p.id;
-                return (
-                  <motion.button
-                    key={p.id}
-                    onClick={() => setSelected(p.id)}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.2, delay: i * 0.04 }}
-                    whileHover={{ y: -2 }}
-                    className={cn(
-                      "relative flex flex-col rounded-lg border p-4 text-left shadow-card transition-all hover:shadow-card-hover",
-                      isSelected
-                        ? "border-primary-600 bg-primary-50/50 ring-1 ring-primary-600"
-                        : "border-border bg-white"
-                    )}
-                  >
-                    {p.highlight && (
-                      <span className="absolute -top-2.5 right-3 flex items-center gap-1 rounded-full bg-primary-600 px-2 py-0.5 text-[10.5px] font-medium text-white">
-                        <Sparkles size={10} />
-                        Most popular
-                      </span>
-                    )}
-                    <div className="mb-2 flex items-center gap-1.5">
-                      <Coins size={16} className="text-primary-600" />
-                      <span className="text-[17px] font-semibold text-foreground">
-                        {p.points.toLocaleString()}
-                      </span>
-                      {p.bonus > 0 && (
-                        <span className="rounded-sm bg-primary-50 px-1.5 py-0.5 text-[11px] font-medium text-primary-700">
-                          +{p.bonus} bonus
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-[13px] text-muted-foreground">${p.price.toFixed(2)} USD</p>
-                    <div
+        {credited !== null && (
+          <div className="mb-4 flex items-center gap-2 rounded-md border border-primary-600/30 bg-primary-50 px-3 py-2.5 text-[13px] text-primary-700">
+            <Check size={15} />
+            ${credited.toFixed(2)} added to your wallet.
+          </div>
+        )}
+
+        {confirming && (
+          <div className="mb-4 flex items-center gap-2 rounded-md border border-border bg-muted/50 px-3 py-2.5 text-[13px] text-muted-foreground">
+            <Loader2 size={15} className="animate-spin" />
+            Confirming your payment…
+          </div>
+        )}
+
+        {returnedRef && !confirming && credited === null && (
+          <div className="mb-4 rounded-md border border-border bg-muted/50 px-3 py-2.5 text-[13px] text-muted-foreground">
+            We haven&apos;t received confirmation yet. If you completed the payment, it will be
+            added automatically once it clears — you can safely leave this page.
+          </div>
+        )}
+
+        {error && (
+          <div className="mb-4 rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-[13px] text-destructive">
+            {error}
+          </div>
+        )}
+
+        <div className="rounded-lg border border-border bg-white p-5 shadow-card">
+          {/* Amount */}
+          <p className="mb-2 text-[13px] font-semibold text-foreground">Amount</p>
+          <div className="mb-2.5 flex flex-wrap gap-1.5">
+            {PRESETS.map((p) => (
+              <button
+                key={p}
+                onClick={() => setAmount(String(p))}
+                className={cn(
+                  "rounded-md border px-3 py-1.5 text-[12.5px] font-medium transition-colors",
+                  Number(amount) === p
+                    ? "border-primary-600 bg-primary-50 text-primary-700"
+                    : "border-border bg-white text-foreground hover:bg-muted/60"
+                )}
+              >
+                ${p}
+              </button>
+            ))}
+          </div>
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[14px] text-muted-foreground">
+              $
+            </span>
+            <Input
+              type="number"
+              inputMode="decimal"
+              min={MIN_USD}
+              step="0.01"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="pl-7"
+              placeholder="Enter amount"
+            />
+          </div>
+          <p className="mt-1.5 text-[12px] text-muted-foreground">
+            Minimum ${MIN_USD.toFixed(2)}. You&apos;ll be charged the naira equivalent at
+            today&apos;s rate.
+          </p>
+
+          {/* Payment method */}
+          <p className="mb-2 mt-5 text-[13px] font-semibold text-foreground">Payment method</p>
+          <div className="space-y-1.5">
+            {CHANNELS.map((c) => {
+              const Icon = c.icon;
+              const active = channel === c.id;
+              return (
+                <button
+                  key={c.id}
+                  onClick={() => setChannel(c.id)}
+                  className={cn(
+                    "flex w-full items-center gap-2.5 rounded-md border px-3 py-2.5 text-left transition-colors",
+                    active
+                      ? "border-primary-600 bg-primary-50"
+                      : "border-border bg-white hover:bg-muted/60"
+                  )}
+                >
+                  <Icon
+                    size={17}
+                    className={active ? "text-primary-600" : "text-muted-foreground"}
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p
                       className={cn(
-                        "mt-3 flex h-5 w-5 items-center justify-center rounded-full border",
-                        isSelected
-                          ? "border-primary-600 bg-primary-600"
-                          : "border-border bg-white"
+                        "text-[13px] font-medium",
+                        active ? "text-primary-700" : "text-foreground"
                       )}
                     >
-                      {isSelected && <Check size={12} className="text-white" />}
-                    </div>
-                  </motion.button>
-                );
-              })}
-            </div>
-
-            <div className="mt-5 flex items-start gap-2 rounded-md border border-border bg-muted/40 p-3 text-[12.5px] text-muted-foreground">
-              <ShieldCheck size={15} className="mt-0.5 shrink-0 text-primary-600" />
-              Payments are processed securely. Points are added to your balance instantly after
-              checkout and never expire.
-            </div>
-          </div>
-
-          {/* Order summary */}
-          <div className="lg:sticky lg:top-[76px] lg:self-start">
-            <Card className="p-4">
-              <p className="mb-3 text-[13px] font-medium text-foreground">Order summary</p>
-
-              <div className="space-y-2 border-b border-border pb-3 text-[13px]">
-                <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Package</span>
-                  <span className="font-medium text-foreground">
-                    {pkg.points.toLocaleString()} pts
-                  </span>
-                </div>
-                {pkg.bonus > 0 && (
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Bonus points</span>
-                    <span className="font-medium text-primary-700">+{pkg.bonus} pts</span>
+                      {c.label}
+                    </p>
+                    <p className="text-[12px] text-muted-foreground">{c.hint}</p>
                   </div>
-                )}
-                <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Price</span>
-                  <span className="font-medium text-foreground">${pkg.price.toFixed(2)}</span>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between py-3">
-                <span className="text-[13px] font-medium text-foreground">You&apos;ll receive</span>
-                <span className="flex items-center gap-1 text-[15px] font-semibold text-foreground">
-                  <Coins size={14} className="text-primary-600" />
-                  {(pkg.points + pkg.bonus).toLocaleString()}
-                </span>
-              </div>
-
-              <Button className="w-full gap-1.5" onClick={handlePurchase} disabled={purchasing}>
-                {purchasing ? (
-                  <>
-                    <Loader2 size={14} className="animate-spin" /> Processing…
-                  </>
-                ) : success ? (
-                  <>
-                    <Check size={14} /> Added to balance
-                  </>
-                ) : (
-                  <>
-                    <CreditCard size={14} /> Pay ${pkg.price.toFixed(2)}
-                  </>
-                )}
-              </Button>
-
-              <p className="mt-2.5 text-center text-[11px] text-muted-foreground">
-                Current balance: {points.toLocaleString()} points
-              </p>
-            </Card>
+                  {active && <Check size={15} className="shrink-0 text-primary-600" />}
+                </button>
+              );
+            })}
           </div>
+
+          <Button
+            onClick={startPayment}
+            disabled={!valid || submitting}
+            className="mt-5 w-full"
+            size="lg"
+          >
+            {submitting ? "Starting…" : `Pay $${valid ? amountUsd.toFixed(2) : "0.00"}`}
+          </Button>
+          <p className="mt-2 text-center text-[11.5px] text-muted-foreground">
+            Payments are processed securely by Paystack.
+          </p>
         </div>
       </main>
     </div>
+  );
+}
+
+/**
+ * useSearchParams() must sit inside a Suspense boundary in the Next.js App
+ * Router - without one, `next build` fails when prerendering this route.
+ */
+export default function BuyPointsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-background">
+          <Loader2 size={20} className="animate-spin text-muted-foreground" />
+        </div>
+      }
+    >
+      <BuyPointsPageInner />
+    </Suspense>
   );
 }

@@ -1,16 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
-import { Loader2 } from "lucide-react";
+import { Loader2, Clock } from "lucide-react";
 
-export default function LoginPage() {
+function LoginPageInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  // Set by the middleware when a session is ended for inactivity, so we can
+  // explain why they're back here instead of just showing a bare form.
+  const timedOut = searchParams.get("timeout") === "1";
+  const nextPath = searchParams.get("next");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -34,13 +40,29 @@ export default function LoginPage() {
     // through the old site before this row-creation step existed here.
     await fetch("/api/users/ensure", { method: "POST" });
 
-    router.push("/");
+    router.push(nextPath && nextPath.startsWith("/") ? nextPath : "/dashboard");
     router.refresh();
   }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <Card className="w-full max-w-[380px] p-6">
+        <Link href="/" className="mb-5 flex items-center justify-center gap-1">
+          <Image src="/logo-icon.png" alt="5" width={26} height={26} priority />
+          <span className="text-[16px] font-semibold tracking-tight text-foreground">
+            number
+          </span>
+        </Link>
+        {timedOut && (
+          <div className="mb-4 flex items-start gap-2 rounded-md border border-border bg-muted/60 px-3 py-2.5">
+            <Clock size={15} className="mt-0.5 shrink-0 text-muted-foreground" />
+            <p className="text-[12.5px] leading-relaxed text-muted-foreground">
+              You were signed out after 4 hours of inactivity. Log in to pick up where you left
+              off.
+            </p>
+          </div>
+        )}
+
         <div className="mb-6 text-center">
           <h1 className="text-[19px] font-semibold tracking-tight text-foreground">
             Welcome back
@@ -100,5 +122,23 @@ export default function LoginPage() {
         </p>
       </Card>
     </div>
+  );
+}
+
+/**
+ * useSearchParams() must sit inside a Suspense boundary in the Next.js App
+ * Router - without one, `next build` fails when prerendering this route.
+ */
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-background">
+          <Loader2 size={20} className="animate-spin text-muted-foreground" />
+        </div>
+      }
+    >
+      <LoginPageInner />
+    </Suspense>
   );
 }

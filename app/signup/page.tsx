@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -86,7 +87,7 @@ export default function SignupPage() {
         return;
       }
 
-      router.push("/");
+      router.push("/dashboard");
       router.refresh();
     } catch {
       setError("Something went wrong. Please try again.");
@@ -125,6 +126,12 @@ export default function SignupPage() {
             Back
           </button>
 
+        <Link href="/" className="mb-5 flex items-center justify-center gap-1">
+          <Image src="/logo-icon.png" alt="5" width={26} height={26} priority />
+          <span className="text-[16px] font-semibold tracking-tight text-foreground">
+            number
+          </span>
+        </Link>
           <div className="mb-6 text-center">
             <h1 className="text-[19px] font-semibold tracking-tight text-foreground">
               Check your email
@@ -178,6 +185,12 @@ export default function SignupPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <Card className="w-full max-w-[380px] p-6">
+        <Link href="/" className="mb-5 flex items-center justify-center gap-1">
+          <Image src="/logo-icon.png" alt="5" width={26} height={26} priority />
+          <span className="text-[16px] font-semibold tracking-tight text-foreground">
+            number
+          </span>
+        </Link>
         <div className="mb-6 text-center">
           <h1 className="text-[19px] font-semibold tracking-tight text-foreground">
             Create your account

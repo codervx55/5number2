@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const nav = [
-  { href: "/dashboard", label: "Dashboard", icon: Phone },
+  { href: "/", label: "Dashboard", icon: Phone },
   { href: "/rent", label: "Rent", icon: CalendarClock },
   { href: "/numbers", label: "My Numbers", icon: History },
   { href: "/settings", label: "Settings", icon: Settings },
@@ -20,7 +20,7 @@ export function Header({ points = 0 }: { points?: number }) {
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-white/90 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-[1400px] items-center gap-6 px-4 sm:px-6">
-        <Link href="/dashboard" className="flex shrink-0 items-center gap-1">
+        <Link href="/" className="flex shrink-0 items-center gap-1">
           <Image src="/logo-icon.png" alt="5" width={26} height={26} priority />
           <span className="text-[15px] font-semibold tracking-tight text-foreground">
             number

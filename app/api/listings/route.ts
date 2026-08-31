@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SMSPVA_COUNTRIES } from "@/lib/smspva-countries";
 import { SMSPVA_SERVICES } from "@/lib/smspva-services";
-import { getStock, getPrice } from "@/lib/smspva";
+import {
+  getStock,
+  getPrice,
+  getAllPricesForService,
+  getAllCountsForService,
+} from "@/lib/smspva";
+import { applyMargin } from "@/lib/pricing";
 import { Listing } from "@/lib/types";
 
 /**
@@ -17,10 +23,49 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 const cache = new Map<string, { listings: Listing[]; expiresAt: number }>();
 
 /**
- * TODO (verify against SMSPVA docs): if SMSPVA's get_count_new supports a
- * "country=0" or similar "all countries" mode that returns stock for every
- * country in a single call, use that instead of fanning out one request per
- * country below - it would cut this from ~250 requests to 1 per service.
+ * Fast path: two bulk calls covering every country at once, instead of the
+ * 138 requests (69 countries x price+stock) the fallback below makes.
+ *
+ * Returns null if either bulk response can't be parsed into anything
+ * usable, so a shape mismatch degrades to "slow" rather than "empty".
+ */
+async function fetchListingsBulk(serviceId: string): Promise<Listing[] | null> {
+  const service = SMSPVA_SERVICES.find((s) => s.id === serviceId);
+  if (!service) return null;
+
+  const [prices, counts] = await Promise.all([
+    getAllPricesForService(service.code),
+    getAllCountsForService(service.code),
+  ]);
+
+  if (!prices || !counts) return null;
+
+  const known = new Set(SMSPVA_COUNTRIES.map((c) => c.code));
+  const listings: Listing[] = [];
+
+  for (const [countryCode, stock] of counts) {
+    if (stock <= 0) continue;
+    if (!known.has(countryCode)) continue; // country we don't have metadata for
+    const price = prices.get(countryCode);
+    if (price === undefined) continue;
+
+    listings.push({
+      id: `${countryCode}-${service.id}`,
+      countryCode,
+      serviceId: service.id,
+      priceInPoints: applyMargin(price),
+      successRate: 0, // SMSPVA doesn't expose this - drop from UI or source elsewhere
+      stock,
+    });
+  }
+
+  return listings.length > 0 ? listings : null;
+}
+
+/**
+ * Fallback: one request per country. Slow (SMSPVA asks for 4-5s between
+ * queries, and this is ~138 of them) but it works regardless of the bulk
+ * endpoints' response shapes.
  */
 async function fetchLiveListingsForService(serviceId: string): Promise<Listing[]> {
   const service = SMSPVA_SERVICES.find((s) => s.id === serviceId);
@@ -43,8 +88,8 @@ async function fetchLiveListingsForService(serviceId: string): Promise<Listing[]
             id: `${country.code}-${service.id}`,
             countryCode: country.code,
             serviceId: service.id,
-            priceInPoints: price,
-            successRate: 0, // TODO: SMSPVA doesn't expose this - drop from UI or source elsewhere
+            priceInPoints: applyMargin(price),
+            successRate: 0,
             stock,
           };
           return listing;
@@ -76,9 +121,18 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const listings = await fetchLiveListingsForService(serviceId);
+    const bulk = await fetchListingsBulk(serviceId);
+    const listings = bulk ?? (await fetchLiveListingsForService(serviceId));
+
+    if (!bulk) {
+      console.warn(
+        `Bulk listing lookup unavailable for ${serviceId} - used the slow per-country path. ` +
+          `Set SMSPVA_DEBUG=1 to log the raw bulk responses and fix the field mapping.`
+      );
+    }
+
     cache.set(serviceId, { listings, expiresAt: Date.now() + CACHE_TTL_MS });
-    return NextResponse.json({ listings, cached: false });
+    return NextResponse.json({ listings, cached: false, fast: Boolean(bulk) });
   } catch (err) {
     console.error("Failed to fetch listings:", err);
     return NextResponse.json(
