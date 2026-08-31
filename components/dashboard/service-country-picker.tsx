@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
 import { ArrowRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Listing, SmspvaCountry, SmspvaService } from "@/lib/types";
@@ -46,29 +45,11 @@ export function ServiceCountryPicker({
     .map((id) => services.find((s) => s.id === id))
     .filter((s): s is SmspvaService => Boolean(s));
 
-  // Once a service is picked, only show countries that actually have stock
-  // for it - no point letting someone pick a country with nothing available.
-  const availableCountries = useMemo(() => {
-    if (!activeService) return countries;
-    const codesWithStock = new Set(
-      listings
-        .filter((l) => l.serviceId === activeService.id && l.stock > 0)
-        .map((l) => l.countryCode)
-    );
-    return countries.filter((c) => codesWithStock.has(c.code));
-  }, [activeService, countries, listings]);
+  // Always show every country, regardless of live stock for the picked service.
+  const availableCountries = countries;
 
   function handleServiceSelect(s: SmspvaService | null) {
     onServiceChange(s);
-    // A country chosen for the previous service might not have stock for
-    // the new one - clear it so the listing grid below doesn't silently
-    // filter down to zero results.
-    if (s && activeCountry) {
-      const stillValid = listings.some(
-        (l) => l.serviceId === s.id && l.countryCode === activeCountry.code && l.stock > 0
-      );
-      if (!stillValid) onCountryChange(null);
-    }
   }
 
   return (
@@ -151,7 +132,7 @@ export function ServiceCountryPicker({
         {!activeService ? (
           <div className="flex items-center gap-2 rounded-md border border-dashed border-border px-3 py-2.5 text-[12.5px] text-muted-foreground">
             <ArrowRight size={14} />
-            Pick a service above to see which countries have numbers available.
+            Pick a service above, then choose any country.
           </div>
         ) : (
           <SearchableSelect
@@ -161,7 +142,7 @@ export function ServiceCountryPicker({
             getKey={(c) => c.code}
             getLabel={(c) => c.name}
             renderIcon={(c) => <CountryFlag isoCode={c.isoCode} size={18} />}
-            allLabel={`All countries (${availableCountries.length} available)`}
+            allLabel={`All countries (${availableCountries.length})`}
             placeholder="Search country…"
             buttonClassName="w-full sm:w-auto"
           />
