@@ -9,6 +9,8 @@ import {
 } from "@/lib/smspva";
 import { applyMargin } from "@/lib/pricing";
 import { Listing } from "@/lib/types";
+import { getFivesimPricesForService } from "@/lib/fivesim";
+import { fivesimProductFor, fivesimCountryForIso } from "@/lib/provider-map";
 
 /**
  * In-memory cache keyed by serviceId. Avoids hammering SMSPVA on every page
@@ -50,12 +52,13 @@ async function fetchListingsBulk(serviceId: string): Promise<Listing[] | null> {
     if (price === undefined) continue;
 
     listings.push({
-      id: `${countryCode}-${service.id}`,
+      id: `smspva-${countryCode}-${service.id}`,
       countryCode,
       serviceId: service.id,
       priceInPoints: applyMargin(price),
       successRate: 0, // SMSPVA doesn't expose this - drop from UI or source elsewhere
       stock,
+      provider: "smspva",
     });
   }
 
@@ -85,12 +88,13 @@ async function fetchLiveListingsForService(serviceId: string): Promise<Listing[]
           ]);
           if (stock <= 0) return null;
           const listing: Listing = {
-            id: `${country.code}-${service.id}`,
+            id: `smspva-${country.code}-${service.id}`,
             countryCode: country.code,
             serviceId: service.id,
             priceInPoints: applyMargin(price),
             successRate: 0,
             stock,
+            provider: "smspva",
           };
           return listing;
         } catch (err) {
@@ -103,6 +107,57 @@ async function fetchLiveListingsForService(serviceId: string): Promise<Listing[]
   }
 
   return results;
+}
+
+
+/**
+ * 5sim rows for the 12 popular mapped services. Returns one row per country
+ * that 5sim has stock for, priced off the cheapest in-stock operator (which
+ * 5sim's buy endpoint can reserve exactly - so display == charge). Countries
+ * are matched to our SMSPVA country metadata via ISO code so the UI can show
+ * a flag/name. Returns [] for any unmapped service or on any 5sim error, so
+ * 5sim problems never break the SMSPVA listings.
+ */
+async function fetchFivesimListings(serviceId: string): Promise<Listing[]> {
+  const product = fivesimProductFor(serviceId);
+  if (!product) return [];
+
+  try {
+    const priceMap = await getFivesimPricesForService(product);
+    if (priceMap.size === 0) return [];
+
+    // Resolve 5sim country slug -> our country code, via ISO.
+    // Build an ISO->countryCode index from our SMSPVA countries once.
+    const isoToCode = new Map<string, string>();
+    for (const c of SMSPVA_COUNTRIES) {
+      if (c.isoCode) isoToCode.set(c.isoCode.toLowerCase(), c.code);
+    }
+
+    const out: Listing[] = [];
+    for (const c of SMSPVA_COUNTRIES) {
+      const slug = c.isoCode ? fivesimCountryForIso(c.isoCode) : null;
+      if (!slug) continue;
+      const info = priceMap.get(slug);
+      if (!info) continue; // 5sim has no stock for this country
+
+      out.push({
+        id: `5sim-${c.code}-${serviceId}`,
+        countryCode: c.code,
+        serviceId,
+        priceInPoints: applyMargin(info.price),
+        successRate: 0,
+        stock: info.count,
+        provider: "5sim",
+        fivesimCountry: slug,
+        fivesimOperator: info.operator,
+        fivesimProduct: product,
+      });
+    }
+    return out;
+  } catch (err) {
+    console.error("5sim listings fetch failed (non-fatal):", err);
+    return [];
+  }
 }
 
 export async function GET(req: NextRequest) {
@@ -121,8 +176,12 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const bulk = await fetchListingsBulk(serviceId);
-    const listings = bulk ?? (await fetchLiveListingsForService(serviceId));
+    const [bulk, fivesimRows] = await Promise.all([
+      fetchListingsBulk(serviceId),
+      fetchFivesimListings(serviceId),
+    ]);
+    const smspvaRows = bulk ?? (await fetchLiveListingsForService(serviceId));
+    const listings = [...smspvaRows, ...fivesimRows];
 
     if (!bulk) {
       console.warn(

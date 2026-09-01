@@ -149,6 +149,7 @@ export default function DashboardPage() {
         body: JSON.stringify({
           serviceId: listing.serviceId,
           countryCode: listing.countryCode,
+          provider: listing.provider ?? "smspva",
         }),
       });
       const data = await res.json();

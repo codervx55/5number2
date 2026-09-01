@@ -33,6 +33,14 @@ export interface Listing {
   priceInPoints: number;
   successRate: number; // 0-100
   stock: number;
+  // Which provider this listing is for. Defaults to "smspva" for existing
+  // rows; "5sim" rows carry the extra fields below so the buy route can
+  // reserve the exact same country/operator that was priced.
+  provider?: "smspva" | "5sim";
+  // 5sim-only: the 5sim country slug and operator this price/stock is for.
+  fivesimCountry?: string;
+  fivesimOperator?: string;
+  fivesimProduct?: string;
 }
 
 export type OrderStatus = "waiting" | "received" | "expired" | "cancelled";

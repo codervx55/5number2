@@ -52,7 +52,19 @@ export function ListingCard({
       <div className="flex min-w-0 flex-1 items-center gap-2.5">
         <SmspvaServiceIcon service={service} size={30} />
         <div className="min-w-0">
-          <p className="truncate text-[13.5px] font-medium text-foreground">{service.name}</p>
+          <p className="truncate text-[13.5px] font-medium text-foreground">
+            {service.name}
+            <span
+              className={cn(
+                "ml-2 rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
+                listing.provider === "5sim"
+                  ? "bg-emerald-50 text-emerald-700"
+                  : "bg-sky-50 text-sky-700"
+              )}
+            >
+              {listing.provider === "5sim" ? "5sim" : "smspva"}
+            </span>
+          </p>
           <p className="truncate text-[11.5px] text-muted-foreground">
             +•• ••• •••• &middot; hidden until purchase
           </p>

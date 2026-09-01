@@ -67,7 +67,13 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const origin = req.nextUrl.origin;
+    // IMPORTANT: on Render (behind their proxy) req.nextUrl.origin resolves to
+    // the internal http://localhost:10000, which Paystack would then redirect
+    // the user back to after payment - a dead page. Use the public site URL
+    // instead: NEXT_PUBLIC_SITE_URL if set, else the request origin as a
+    // fallback for local dev.
+    const origin =
+      process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || req.nextUrl.origin;
     const { authorizationUrl } = await initializeTransaction({
       email: dbUser.email,
       amountNgn,

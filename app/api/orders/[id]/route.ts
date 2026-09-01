@@ -2,20 +2,21 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAuthenticatedUser } from "@/lib/supabase/server";
 import { checkSms } from "@/lib/smspva";
+import { checkFivesimSms, cancelFivesimOrder } from "@/lib/fivesim";
 
 /**
  * Closes an order with the given end status and refunds the wallet for it,
- * atomically. Idempotent: the refund Transaction uses a unique reference
- * (`refund:<orderId>`), so if this runs twice (e.g. two polls race), the
- * second refund insert fails and the wallet is only credited once.
- *
- * Only refunds activation orders that were actually charged (price > 0) and
- * that haven't already been moved to a terminal refunded state.
+ * atomically. Idempotent via a unique refund reference (`refund:<orderId>`),
+ * so racing polls can't refund twice. For 5sim orders it also cancels the
+ * number at 5sim (best-effort) so your provider balance is refunded too.
  */
 async function refundAndClose(order: any, endStatus: "expired" | "cancelled") {
-  const price = Number(order.price);
+  // Best-effort provider-side cancel (only 5sim needs/handles this here).
+  if (order.provider === "5sim" && order.providerOrderId) {
+    await cancelFivesimOrder(order.providerOrderId);
+  }
 
-  // Nothing to refund (free/zero-price or already closed) - just set status.
+  const price = Number(order.price);
   if (!Number.isFinite(price) || price <= 0) {
     return prisma.order.update({
       where: { id: order.id },
@@ -26,9 +27,6 @@ async function refundAndClose(order: any, endStatus: "expired" | "cancelled") {
 
   try {
     return await prisma.$transaction(async (tx) => {
-      // Insert the refund ledger row FIRST - its unique reference is the lock.
-      // If a refund for this order already exists, this throws and we skip
-      // crediting the wallet again.
       await tx.transaction.create({
         data: {
           userId: order.userId,
@@ -53,7 +51,6 @@ async function refundAndClose(order: any, endStatus: "expired" | "cancelled") {
     });
   } catch (err) {
     // Unique-constraint violation = already refunded by a concurrent poll.
-    // Just return the order in its end status without double-crediting.
     console.error(`Refund skipped for order ${order.id} (already refunded?):`, err);
     return prisma.order.update({
       where: { id: order.id },
@@ -65,12 +62,9 @@ async function refundAndClose(order: any, endStatus: "expired" | "cancelled") {
 
 /**
  * GET /api/orders/:id
- *
- * Polls the provider for a new incoming SMS on this order. Call this on an
- * interval (e.g. every 3-5s) from ActiveNumberPanel while status is
- * "waiting". Once a code arrives, it's stored as an OrderMessage and the
- * order's status flips to "received" - both are then returned so the UI can
- * stop polling and render the message.
+ * Polls the provider (SMSPVA or 5sim) for a new incoming SMS on this order.
+ * Once a code arrives it's stored and the order flips to "received". If the
+ * number expires with no code, the wallet is refunded.
  */
 export async function GET(
   req: NextRequest,
@@ -91,25 +85,23 @@ export async function GET(
     return NextResponse.json({ error: "Order not found." }, { status: 404 });
   }
 
-  // Nothing to poll for on a finished order - just return current state.
   if (order.status !== "waiting") {
     return NextResponse.json({ order });
   }
 
   if (new Date() > order.expiresAt) {
-    // No code arrived before the number expired - refund the wallet.
-    // Only activation orders that actually charged get refunded, and the
-    // refund is guarded by a unique transaction reference so repeated polls
-    // can't refund the same order twice.
+    // No code before expiry - refund the wallet.
     const expired = await refundAndClose(order, "expired");
     return NextResponse.json({ order: expired });
   }
 
   try {
-    const { code, fullText } = await checkSms(order.providerOrderId);
+    const { code, fullText } =
+      order.provider === "5sim"
+        ? await checkFivesimSms(order.providerOrderId)
+        : await checkSms(order.providerOrderId);
 
     if (!code) {
-      // Still waiting - nothing new.
       return NextResponse.json({ order });
     }
 
@@ -133,15 +125,14 @@ export async function GET(
     return NextResponse.json({ order: updated });
   } catch (err) {
     console.error(`Failed to poll SMS for order ${order.id}:`, err);
-    // Don't fail the whole request over a transient provider hiccup - just
-    // return current state so the UI keeps polling on the next interval.
     return NextResponse.json({ order });
   }
 }
 
 /**
  * DELETE /api/orders/:id
- * Marks an order as cancelled (the "release" action in the UI).
+ * Releases a number. If no code has arrived yet, refunds the wallet (and
+ * cancels at the provider). If a code was already received, no refund.
  */
 export async function DELETE(
   req: NextRequest,
@@ -158,8 +149,6 @@ export async function DELETE(
     return NextResponse.json({ error: "Order not found." }, { status: 404 });
   }
 
-  // Releasing a number before any code arrived refunds the wallet; if a
-  // code was already received, no refund (the number was used).
   const updated = order.code
     ? await prisma.order.update({
         where: { id: order.id },
