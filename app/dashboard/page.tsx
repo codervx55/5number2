@@ -168,7 +168,28 @@ export default function DashboardPage() {
         setBalance(me.walletBalance);
       }
     } catch (err) {
-      console.error("Purchase failed:", err);
+      // The POST can time out (e.g. a cold start) even though the server
+      // actually created the order. Before showing an error, check whether an
+      // order was in fact created - if so, recover silently and show it.
+      console.error("Purchase request errored, checking if order was created:", err);
+      try {
+        await new Promise((r) => setTimeout(r, 1500));
+        const ordersRes = await fetch("/api/orders");
+        if (ordersRes.ok) {
+          const { orders } = (await ordersRes.json()) as { orders: ApiOrder[] };
+          if (orders.length > 0) {
+            setActiveOrder(adaptOrder(orders[0]));
+            const meRes = await fetch("/api/me");
+            if (meRes.ok) {
+              const me = await meRes.json();
+              setBalance(me.walletBalance);
+            }
+            return; // recovered - no error shown
+          }
+        }
+      } catch (recoverErr) {
+        console.error("Recovery check failed:", recoverErr);
+      }
       setPurchaseError("Something went wrong. Please try again.");
     } finally {
       setPurchasingId(null);
