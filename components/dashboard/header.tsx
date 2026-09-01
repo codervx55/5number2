@@ -3,13 +3,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Wallet, Phone, Plus, Settings, History, CalendarClock } from "lucide-react";
+import { Wallet, Phone, Plus, Settings, History, CalendarClock, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const nav = [
   { href: "/dashboard", label: "Dashboard", icon: Phone },
   { href: "/rent", label: "Rent", icon: CalendarClock },
+  { href: "/rentals", label: "My Rentals", icon: MessageSquare },
   { href: "/numbers", label: "My Numbers", icon: History },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
