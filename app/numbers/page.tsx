@@ -1,145 +1,165 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Header } from "@/components/dashboard/header";
-import { CountryFlag } from "@/components/dashboard/country-flag";
-import { SmspvaServiceIcon } from "@/components/dashboard/smspva-service-icon";
-import { Badge } from "@/components/ui/badge";
-import { countries, services } from "@/lib/mock-data";
+import {
+  Clock, CheckCircle2, XCircle, Loader2, Phone, Copy, Check, MessageSquare,
+} from "lucide-react";
 import { adaptOrder, ApiOrder } from "@/lib/api-adapters";
 import { Order } from "@/lib/types";
-import { formatRelativeTime } from "@/lib/utils";
-import { CheckCircle2, Clock, XCircle, Inbox, Loader2 } from "lucide-react";
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { SMSPVA_SERVICES } from "@/lib/smspva-services";
+import { SMSPVA_COUNTRIES } from "@/lib/smspva-countries";
+import { CountryFlag } from "@/components/dashboard/country-flag";
 
-const statusConfig = {
-  received: { label: "SMS received", icon: CheckCircle2, className: "text-primary-700 bg-primary-50" },
-  waiting: { label: "Waiting", icon: Clock, className: "text-amber-700 bg-amber-50" },
-  expired: { label: "Expired", icon: XCircle, className: "text-muted-foreground bg-muted" },
-  cancelled: { label: "Cancelled", icon: XCircle, className: "text-muted-foreground bg-muted" },
+const statusMeta: Record<string, { label: string; className: string; Icon: any }> = {
+  waiting: { label: "Waiting", className: "text-amber-700 bg-amber-50", Icon: Clock },
+  received: { label: "Code received", className: "text-emerald-700 bg-emerald-50", Icon: CheckCircle2 },
+  expired: { label: "Expired · refunded", className: "text-sky-700 bg-sky-50", Icon: XCircle },
+  cancelled: { label: "Cancelled", className: "text-muted-foreground bg-muted", Icon: XCircle },
 };
 
-export default function NumbersPage() {
+function svcName(id: string) {
+  return SMSPVA_SERVICES.find((s) => s.id === id)?.name ?? id;
+}
+function ctry(code: string) {
+  return SMSPVA_COUNTRIES.find((c) => c.code === code);
+}
+function timeAgo(iso: string) {
+  const ms = Date.now() - new Date(iso).getTime();
+  const m = Math.floor(ms / 60000);
+  if (m < 1) return "just now";
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h ago`;
+  return `${Math.floor(h / 24)}d ago`;
+}
+
+export default function MyNumbersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
-  const [authError, setAuthError] = useState(false);
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [copied, setCopied] = useState<string | null>(null);
+
+  async function load() {
+    try {
+      const res = await fetch("/api/orders?history=1");
+      if (res.ok) {
+        const { orders: api } = (await res.json()) as { orders: ApiOrder[] };
+        setOrders((api ?? []).map(adaptOrder));
+      }
+    } catch (e) {
+      console.error("Failed to load numbers:", e);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    let cancelled = false;
-    async function loadOrders() {
-      try {
-        const res = await fetch("/api/orders");
-        if (res.status === 401) {
-          if (!cancelled) setAuthError(true);
-          return;
-        }
-        if (!res.ok) return;
-        const { orders: apiOrders } = (await res.json()) as { orders: ApiOrder[] };
-        if (!cancelled) setOrders(apiOrders.map(adaptOrder));
-      } catch (err) {
-        console.error("Failed to load orders:", err);
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    }
-    loadOrders();
-    return () => {
-      cancelled = true;
-    };
+    load();
   }, []);
 
-  if (authError) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background px-4">
-        <div className="text-center">
-          <p className="text-[15px] font-medium text-foreground">You need to sign in first.</p>
-          <p className="mt-1 text-[13px] text-muted-foreground">
-            Log in to see your order history.
-          </p>
-          <Link href="/login">
-            <Button className="mt-4">Log in</Button>
-          </Link>
-        </div>
-      </div>
-    );
+  async function cancel(id: string) {
+    setBusyId(id);
+    try {
+      await fetch(`/api/orders/${id}`, { method: "DELETE" });
+      await load();
+    } catch (e) {
+      console.error("Cancel failed:", e);
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  function copy(text: string, id: string) {
+    navigator.clipboard?.writeText(text);
+    setCopied(id);
+    setTimeout(() => setCopied(null), 1500);
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main className="mx-auto max-w-[1000px] px-4 py-8 sm:px-6">
-        <div className="mb-6">
-          <h1 className="text-[19px] font-semibold tracking-tight text-foreground">
-            My numbers
-          </h1>
-          <p className="mt-0.5 text-[13px] text-muted-foreground">
-            Order history and past SMS verifications.
-          </p>
-        </div>
+    <div className="min-h-screen bg-background px-4 py-6 sm:px-8">
+      <div className="mx-auto max-w-3xl">
+        <h1 className="text-xl font-bold text-foreground">My Numbers</h1>
+        <p className="mb-5 text-sm text-muted-foreground">
+          Your activation history. Cancel an unused number for a refund — once a code
+          arrives, it can’t be refunded.
+        </p>
 
-        {loading ? (
-          <div className="flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border py-16 text-center text-muted-foreground">
-            <Loader2 size={18} className="animate-spin" />
-            <p className="text-[13.5px]">Loading your orders…</p>
-          </div>
-        ) : orders.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-16 text-center">
-            <Inbox size={20} className="mb-3 text-muted-foreground" />
-            <p className="text-[13.5px] font-medium text-foreground">No orders yet</p>
-            <p className="mt-1 text-[12.5px] text-muted-foreground">
-              Numbers you purchase will show up here.
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-2">
-            {orders.map((order, i) => {
-              const country = countries.find((c) => c.code === order.listing.countryCode);
-              const service = services.find((s) => s.id === order.listing.serviceId);
-              const status = statusConfig[order.status];
-              const StatusIcon = status.icon;
-              return (
-                <motion.div
-                  key={order.id}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.04, duration: 0.18 }}
-                  className="flex flex-col gap-3 rounded-lg border border-border bg-white p-4 shadow-card sm:flex-row sm:items-center sm:justify-between"
-                >
-                  <div className="flex items-center gap-3">
-                    {country && <CountryFlag isoCode={country.isoCode} size={22} />}
-                    {service && <SmspvaServiceIcon service={service} size={32} />}
-                    <div>
-                      <p className="text-[13.5px] font-medium text-foreground">
-                        {service?.name ?? order.listing.serviceId}
-                      </p>
-                      <p className="font-mono text-[12px] text-muted-foreground">
-                        {order.phoneNumber}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4">
-                    <div className="text-right">
-                      <p className="text-[12px] text-muted-foreground">
-                        {formatRelativeTime(order.purchasedAt)}
-                      </p>
-                      <p className="text-[12px] font-medium text-foreground">
-                        {order.pricePaid} pts
-                      </p>
-                    </div>
-                    <Badge className={status.className}>
-                      <StatusIcon size={11} className="mr-1" />
-                      {status.label}
-                    </Badge>
-                  </div>
-                </motion.div>
-              );
-            })}
+        {loading && (
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Loader2 size={15} className="animate-spin" /> Loading…
           </div>
         )}
-      </main>
+
+        {!loading && orders.length === 0 && (
+          <div className="rounded-lg border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
+            No numbers yet. Buy one from the Dashboard.
+          </div>
+        )}
+
+        <div className="space-y-3">
+          {orders.map((o) => {
+            const country = ctry(o.listing.countryCode);
+            const meta = statusMeta[o.status] ?? statusMeta.waiting;
+            const hasCode = o.status === "received" || o.messages.some((m) => m.code);
+            const canCancel = o.status === "waiting" && !hasCode;
+            const code = o.messages.find((m) => m.code)?.code;
+
+            return (
+              <div key={o.id} className="rounded-lg border border-border bg-white p-4 shadow-card">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    {country && <CountryFlag isoCode={country.isoCode} size={22} />}
+                    <div>
+                      <p className="text-[14px] font-semibold text-foreground">
+                        {svcName(o.listing.serviceId)}
+                      </p>
+                      <p className="text-[12px] text-muted-foreground">
+                        {country?.name ?? o.listing.countryCode} · {timeAgo(o.purchasedAt)}
+                      </p>
+                    </div>
+                  </div>
+                  <span className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium ${meta.className}`}>
+                    <meta.Icon size={12} />
+                    {meta.label}
+                  </span>
+                </div>
+
+                <div className="mt-3 flex items-center justify-between gap-3 border-t border-border pt-3">
+                  <button
+                    onClick={() => copy(o.phoneNumber, o.id)}
+                    className="flex items-center gap-1.5 text-[13px] font-medium text-foreground hover:text-primary-700"
+                    title="Copy number"
+                  >
+                    <Phone size={13} className="text-primary-600" />
+                    {o.phoneNumber}
+                    {copied === o.id ? <Check size={12} className="text-emerald-600" /> : <Copy size={12} className="text-muted-foreground" />}
+                  </button>
+                  <span className="text-[13px] font-semibold text-foreground">
+                    ${o.pricePaid.toFixed(2)}
+                  </span>
+                </div>
+
+                {code && (
+                  <div className="mt-2 flex items-center gap-2 rounded-md bg-emerald-50 px-3 py-2">
+                    <MessageSquare size={13} className="text-emerald-600" />
+                    <span className="text-[13px] font-semibold text-emerald-800">Code: {code}</span>
+                  </div>
+                )}
+
+                {canCancel && (
+                  <button
+                    onClick={() => cancel(o.id)}
+                    disabled={busyId === o.id}
+                    className="mt-3 w-full rounded-md border border-destructive/30 bg-destructive/5 py-2 text-[13px] font-medium text-destructive hover:bg-destructive/10 disabled:opacity-60"
+                  >
+                    {busyId === o.id ? "Cancelling…" : "Cancel & refund"}
+                  </button>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
