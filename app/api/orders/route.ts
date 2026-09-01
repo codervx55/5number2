@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getAuthenticatedUser } from "@/lib/supabase/server";
 import { SMSPVA_SERVICES } from "@/lib/smspva-services";
 import { SMSPVA_COUNTRIES } from "@/lib/smspva-countries";
-import { getAllPricesForService, getStock, requestNumber } from "@/lib/smspva";
+import { getAllPricesForService, getAllCountsForService, requestNumber } from "@/lib/smspva";
 import { applyMargin } from "@/lib/pricing";
 
 const ACTIVATION_TTL_MS = 1000 * 60 * 15; // 15 minutes, matches old mock behavior
@@ -55,8 +55,12 @@ export async function POST(req: NextRequest) {
     // (getAllPricesForService), not the old per-country getPrice(), or the
     // buy-check compares against a different (higher) number than the card
     // shows - which shows up as a false "Insufficient balance".
-    const [stock, priceMap] = await Promise.all([
-      getStock(service.code, country.code),
+    // Check stock and price with the SAME V2 sources the listing uses, so a
+    // number shown as available on the card is also buyable here. (Previously
+    // stock came from the V1 get_count_new endpoint, which disagreed with the
+    // V2 listing and caused false "Out of stock".)
+    const [countMap, priceMap] = await Promise.all([
+      getAllCountsForService(service.code),
       getAllPricesForService(service.code),
     ]);
 
@@ -69,6 +73,7 @@ export async function POST(req: NextRequest) {
     // charged a different amount from the price shown on the card.
     const price = applyMargin(providerPrice);
 
+    const stock = countMap?.get(country.code.toUpperCase()) ?? 0;
     if (stock <= 0) {
       return NextResponse.json({ error: "Out of stock." }, { status: 409 });
     }
