@@ -165,9 +165,13 @@ export async function getAllPricesForService(
     }
 
     // Real shape: data.clist[] = { ccode, cname, opers: [{ opcode, price, count }] }
-    // Each country has MANY operators at different prices. We pick the
-    // cheapest operator per country. The "Total_XX" operator is an
-    // aggregated/most-expensive row, so real named operators usually beat it.
+    // Each country lists MANY operators at different prices. CRITICAL: the V2
+    // buy endpoint (/activation/number/{country}/{service}) does NOT accept an
+    // operator - it returns whatever operator SMSPVA chooses and bills us that
+    // operator's price. So we must price off the "Total_XX" operator, which is
+    // the price SMSPVA charges for an unspecified-operator (V2) purchase.
+    // Pricing off the cheapest operator instead would show a price BELOW what
+    // SMSPVA actually charges us -> we'd lose money on every sale.
     const list = data?.data?.clist ?? data?.data?.countries ?? data?.data;
     if (!Array.isArray(list) || list.length === 0) return null;
 
@@ -179,17 +183,25 @@ export async function getAllPricesForService(
       const opers = item?.opers ?? item?.operators ?? [];
       if (!Array.isArray(opers) || opers.length === 0) continue;
 
-      // Cheapest valid price across all operators for this country.
-      let cheapest = Infinity;
+      // Prefer the "Total_" operator's price (what V2 bills us for an
+      // unspecified operator). If for some reason there's no Total_ row,
+      // fall back to the HIGHEST operator price - never the lowest - so we
+      // still can't be charged more by SMSPVA than we charged the user.
+      let totalPrice: number | undefined;
+      let highest = 0;
       for (const op of opers) {
         const p = Number(op?.price ?? op?.cost);
-        if (Number.isFinite(p) && p > 0 && p < cheapest) {
-          cheapest = p;
+        if (!Number.isFinite(p) || p <= 0) continue;
+        const opcode = String(op?.opcode ?? op?.operator ?? "");
+        if (opcode.startsWith("Total_")) {
+          totalPrice = p;
         }
+        if (p > highest) highest = p;
       }
 
-      if (Number.isFinite(cheapest) && cheapest !== Infinity) {
-        out.set(code.toUpperCase(), cheapest);
+      const basis = totalPrice ?? (highest > 0 ? highest : undefined);
+      if (basis !== undefined) {
+        out.set(code.toUpperCase(), basis);
       }
     }
 
@@ -293,10 +305,6 @@ export async function checkSms(providerOrderId: string): Promise<SmspvaSmsResult
     const data = await smspvaV2Request(
       `/activation/sms/${encodeURIComponent(providerOrderId)}`
     );
-
-    if (process.env.SMSPVA_DEBUG === "1") {
-      console.log("RAW sms:", JSON.stringify(data));
-    }
 
     const sms = data?.data?.sms;
     if (!sms) {
