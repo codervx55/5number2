@@ -74,7 +74,7 @@ export default function RentPage() {
         const ordersRes = await fetch("/api/rent/orders");
         if (ordersRes.ok) {
           const { orders: apiOrders } = (await ordersRes.json()) as { orders: ApiRentOrder[] };
-          setOrders(apiOrders.map(adaptRentOrder));
+          setOrders((apiOrders ?? []).map(adaptRentOrder));
         }
       } catch (err) {
         console.error("Failed to load initial rent state:", err);
@@ -102,10 +102,34 @@ export default function RentPage() {
     };
   }, [activeCountry, dtype, dcount]);
 
+  // --- Auto-poll active rentals for new SMS every 8s (no manual refresh) --
+  useEffect(() => {
+    const activeIds = orders.filter((o) => o.status === "active").map((o) => o.id);
+    if (activeIds.length === 0) return;
+
+    const interval = setInterval(async () => {
+      for (const id of activeIds) {
+        try {
+          const res = await fetch(`/api/rent/orders/${id}`);
+          if (res.ok) {
+            const { order } = (await res.json()) as { order: ApiRentOrder };
+            setOrders((prev) => prev.map((o) => (o.id === id ? adaptRentOrder(order) : o)));
+          }
+        } catch {
+          // ignore transient errors; the next tick retries
+        }
+      }
+    }, 8000);
+
+    return () => clearInterval(interval);
+    // Re-key only when the set of order ids changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orders.map((o) => o.id).join(",")]);
+
   const filtered = useMemo(() => {
     if (!query.trim()) return services;
     const q = query.trim().toLowerCase();
-    return services.filter((s) => s.name.toLowerCase().includes(q));
+    return services.filter((s) => (s.name ?? "").toLowerCase().includes(q));
   }, [services, query]);
 
   async function rentService(service: RentService) {
@@ -313,7 +337,7 @@ export default function RentPage() {
             ) : (
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
                 {filtered.map((s) => {
-                  const total = s.pricePerDay * days;
+                  const total = (Number(s.pricePerDay) || 0) * days;
                   const busy = buyingCode === s.code;
                   return (
                     <div
@@ -333,7 +357,7 @@ export default function RentPage() {
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-[13px] font-medium text-foreground">{s.name}</p>
                         <p className="text-[11.5px] text-muted-foreground">
-                          {s.totalCount} avail. · ${s.pricePerDay.toFixed(2)}/day
+                          {s.totalCount ?? 0} avail. · ${(Number(s.pricePerDay) || 0).toFixed(2)}/day
                         </p>
                       </div>
                       <Button
@@ -342,7 +366,7 @@ export default function RentPage() {
                         disabled={busy || buyingCode !== null}
                         className="shrink-0"
                       >
-                        {busy ? "…" : `$${total.toFixed(2)}`}
+                        {busy ? "…" : `$${(Number(total) || 0).toFixed(2)}`}
                       </Button>
                     </div>
                   );
@@ -361,31 +385,39 @@ export default function RentPage() {
                 No active rentals yet.
               </div>
             ) : (
-              orders.map((order) => (
-                <RentOrderCard
-                  key={order.id}
-                  order={order}
-                  service={
-                    services.find((s) => s.code === order.serviceId)
-                      ? {
-                          id: order.serviceId,
-                          code: order.serviceId,
-                          name: services.find((s) => s.code === order.serviceId)!.name,
-                          logoUrl: services.find((s) => s.code === order.serviceId)!.logoUrl,
-                          hasCustomLogo: services.find((s) => s.code === order.serviceId)!
-                            .hasCustomLogo,
-                        }
-                      : null
-                  }
-                  country={
-                    SMSPVA_RENT_COUNTRIES.find((c) => c.code === order.countryCode) ?? null
-                  }
-                  onRefresh={() => refreshOrder(order.id)}
-                  onProlong={(t, c) => prolongOrder(order.id, t, c)}
-                  onCancel={() => cancelOrder(order.id)}
-                  busy={busyOrderId === order.id}
-                />
-              ))
+              orders.map((order) => {
+                const svc = services.find((s) => s.code === order.serviceId);
+                return (
+                  <RentOrderCard
+                    key={order.id}
+                    order={order}
+                    service={
+                      svc
+                        ? {
+                            id: order.serviceId,
+                            code: order.serviceId,
+                            name: svc.name,
+                            logoUrl: svc.logoUrl,
+                            hasCustomLogo: svc.hasCustomLogo,
+                          }
+                        : {
+                            id: order.serviceId,
+                            code: order.serviceId,
+                            name: order.serviceId,
+                            logoUrl: "",
+                            hasCustomLogo: false,
+                          }
+                    }
+                    country={
+                      SMSPVA_RENT_COUNTRIES.find((c) => c.code === order.countryCode) ?? null
+                    }
+                    onRefresh={() => refreshOrder(order.id)}
+                    onProlong={(t, c) => prolongOrder(order.id, t, c)}
+                    onCancel={() => cancelOrder(order.id)}
+                    busy={busyOrderId === order.id}
+                  />
+                );
+              })
             )}
           </div>
         </div>
