@@ -294,6 +294,10 @@ export async function checkSms(providerOrderId: string): Promise<SmspvaSmsResult
       `/activation/sms/${encodeURIComponent(providerOrderId)}`
     );
 
+    if (process.env.SMSPVA_DEBUG === "1") {
+      console.log("RAW sms:", JSON.stringify(data));
+    }
+
     const sms = data?.data?.sms;
     if (!sms) {
       return { code: null, fullText: null };
