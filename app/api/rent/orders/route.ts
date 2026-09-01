@@ -126,20 +126,25 @@ export async function POST(req: NextRequest) {
  * Unlike Activation (one "active" order at a time), a user can have several
  * concurrent rentals, so this returns a list rather than a single order.
  */
-export async function GET() {
+export async function GET(req: NextRequest) {
   const user = await getAuthenticatedUser();
   if (!user) {
     return NextResponse.json({ error: "Not authenticated." }, { status: 401 });
   }
 
+  // Default: active rentals only. With ?history=1, return all rentals
+  // (active, cancelled, expired) so the My Rentals page can show full history.
+  const history = req.nextUrl.searchParams.get("history") === "1";
+
   const orders = await prisma.order.findMany({
     where: {
       userId: user.id,
       orderType: "rent",
-      status: "active",
+      ...(history ? {} : { status: "active" }),
     },
     include: { messages: { orderBy: { receivedAt: "asc" } } },
     orderBy: { createdAt: "desc" },
+    ...(history ? { take: 100 } : {}),
   });
 
   return NextResponse.json({ orders });

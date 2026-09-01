@@ -105,7 +105,7 @@ export default function RentPage() {
   const filtered = useMemo(() => {
     if (!query.trim()) return services;
     const q = query.trim().toLowerCase();
-    return services.filter((s) => (s.name ?? "").toLowerCase().includes(q));
+    return services.filter((s) => s.name.toLowerCase().includes(q));
   }, [services, query]);
 
   async function rentService(service: RentService) {
@@ -218,6 +218,16 @@ export default function RentPage() {
           </p>
         </div>
 
+        {/* Non-refundable notice - rentals are billed upfront for the whole period */}
+        <div className="mb-4 flex items-start gap-2 rounded-md border border-amber-300 bg-amber-50 px-3 py-2.5 text-[12.5px] text-amber-800">
+          <span className="mt-0.5 font-semibold">!</span>
+          <span>
+            Rentals are charged upfront for the full period and are
+            <span className="font-semibold"> non-refundable</span>. You keep the number for the
+            whole duration to receive unlimited SMS - cancelling early does not refund it.
+          </span>
+        </div>
+
         {purchaseError && (
           <div className="mb-4 rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-[13px] text-destructive">
             {purchaseError}
@@ -303,7 +313,7 @@ export default function RentPage() {
             ) : (
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
                 {filtered.map((s) => {
-                  const total = (Number(s.pricePerDay) || 0) * days;
+                  const total = s.pricePerDay * days;
                   const busy = buyingCode === s.code;
                   return (
                     <div
@@ -323,7 +333,7 @@ export default function RentPage() {
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-[13px] font-medium text-foreground">{s.name}</p>
                         <p className="text-[11.5px] text-muted-foreground">
-                          {s.totalCount ?? 0} avail. · ${(Number(s.pricePerDay) || 0).toFixed(2)}/day
+                          {s.totalCount} avail. · ${s.pricePerDay.toFixed(2)}/day
                         </p>
                       </div>
                       <Button
@@ -332,7 +342,7 @@ export default function RentPage() {
                         disabled={busy || buyingCode !== null}
                         className="shrink-0"
                       >
-                        {busy ? "…" : `$${(Number(total) || 0).toFixed(2)}`}
+                        {busy ? "…" : `$${total.toFixed(2)}`}
                       </Button>
                     </div>
                   );
@@ -355,24 +365,18 @@ export default function RentPage() {
                 <RentOrderCard
                   key={order.id}
                   order={order}
-                  service={(() => {
-                    const svc = services.find((s) => s.code === order.serviceId);
-                    return svc
+                  service={
+                    services.find((s) => s.code === order.serviceId)
                       ? {
                           id: order.serviceId,
                           code: order.serviceId,
-                          name: svc.name,
-                          logoUrl: svc.logoUrl,
-                          hasCustomLogo: svc.hasCustomLogo,
+                          name: services.find((s) => s.code === order.serviceId)!.name,
+                          logoUrl: services.find((s) => s.code === order.serviceId)!.logoUrl,
+                          hasCustomLogo: services.find((s) => s.code === order.serviceId)!
+                            .hasCustomLogo,
                         }
-                      : {
-                          id: order.serviceId,
-                          code: order.serviceId,
-                          name: order.serviceId,
-                          logoUrl: "",
-                          hasCustomLogo: false,
-                        };
-                  })()}
+                      : null
+                  }
                   country={
                     SMSPVA_RENT_COUNTRIES.find((c) => c.code === order.countryCode) ?? null
                   }
