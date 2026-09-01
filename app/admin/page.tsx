@@ -29,16 +29,20 @@ const TABS = ["Overview", "Users", "Orders", "Transactions"] as const;
 type Tab = (typeof TABS)[number];
 
 function money(n: number) {
-  return `$${n.toFixed(2)}`;
+  const v = Number(n);
+  return Number.isFinite(v) ? `$${v.toFixed(2)}` : "$0.00";
 }
 function date(s: string) {
-  return new Date(s).toLocaleString();
+  if (!s) return "-";
+  const d = new Date(s);
+  return isNaN(d.getTime()) ? "-" : d.toLocaleString();
 }
 
 export default function AdminPage() {
   const [tab, setTab] = useState<Tab>("Overview");
   const [forbidden, setForbidden] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const [overview, setOverview] = useState<Overview | null>(null);
   const [users, setUsers] = useState<UserRow[]>([]);
@@ -51,15 +55,21 @@ export default function AdminPage() {
       try {
         const res = await fetch("/api/admin/overview");
         if (res.status === 403) { setForbidden(true); return; }
-        if (res.ok) setOverview(await res.json());
+        if (res.ok) {
+          setOverview(await res.json());
+        } else {
+          setLoadError(`Overview failed: ${res.status}`);
+        }
         const [u, o, t] = await Promise.all([
           fetch("/api/admin/users").then((r) => (r.ok ? r.json() : { users: [] })),
           fetch("/api/admin/orders").then((r) => (r.ok ? r.json() : { orders: [] })),
           fetch("/api/admin/transactions").then((r) => (r.ok ? r.json() : { transactions: [] })),
         ]);
-        setUsers(u.users ?? []);
-        setOrders(o.orders ?? []);
-        setTxns(t.transactions ?? []);
+        setUsers(Array.isArray(u?.users) ? u.users : []);
+        setOrders(Array.isArray(o?.orders) ? o.orders : []);
+        setTxns(Array.isArray(t?.transactions) ? t.transactions : []);
+      } catch (e: any) {
+        setLoadError(String(e?.message ?? e));
       } finally {
         setLoading(false);
       }
@@ -104,8 +114,13 @@ export default function AdminPage() {
         </div>
 
         {loading && <p className="text-sm text-muted-foreground">Loading…</p>}
+        {loadError && (
+          <div className="mb-4 rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-[13px] text-destructive">
+            {loadError}
+          </div>
+        )}
 
-        {!loading && tab === "Overview" && overview && (
+        {!loading && tab === "Overview" && overview && overview.orders && overview.money && overview.providerSplit && (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             <Stat label="Total users" value={String(overview.users)} />
             <Stat label="Wallet balances held" value={money(overview.totalWalletBalance)} />
