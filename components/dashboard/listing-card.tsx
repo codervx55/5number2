@@ -62,7 +62,7 @@ export function ListingCard({
                   : "bg-sky-50 text-sky-700"
               )}
             >
-              {listing.provider === "5sim" ? "5sim" : "smspva"}
+              {listing.provider === "5sim" ? "Provider 2" : "Provider 1"}
             </span>
           </p>
           <p className="truncate text-[11.5px] text-muted-foreground">
