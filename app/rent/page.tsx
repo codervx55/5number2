@@ -36,8 +36,16 @@ const DURATIONS: [Dtype, number, string][] = [
 ];
 
 export default function RentPage() {
+  const [mounted, setMounted] = useState(false);
   const [balance, setBalance] = useState<number | null>(null);
   const [authError, setAuthError] = useState(false);
+
+  // Render a stable shell on the very first pass, then show the real UI after
+  // mount. This avoids a first-render/hydration crash that otherwise only
+  // clears on a manual reload.
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const [activeCountry, setActiveCountry] = useState<SmspvaCountry | null>(
     SMSPVA_RENT_COUNTRIES.find((c) => c.code === "AR") ?? SMSPVA_RENT_COUNTRIES[0] ?? null
@@ -226,6 +234,19 @@ export default function RentPage() {
             <Button className="mt-4">Log in</Button>
           </Link>
         </div>
+      </div>
+    );
+  }
+
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header points={balance ?? 0} />
+        <main className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6">
+          <div className="rounded-lg border border-dashed border-border py-16 text-center text-[13px] text-muted-foreground">
+            Loading…
+          </div>
+        </main>
       </div>
     );
   }
