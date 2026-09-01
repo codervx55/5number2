@@ -26,12 +26,22 @@ export function ActiveNumberPanel({
     Math.max(0, Math.round((new Date(order.expiresAt).getTime() - Date.now()) / 1000))
   );
 
+  // Users can cancel for a refund only after waiting this long, so they don't
+  // cancel a number a split-second before its code actually arrives.
+  const CANCEL_UNLOCK_SECONDS = 80;
+  const [cancelIn, setCancelIn] = useState(CANCEL_UNLOCK_SECONDS);
+
   useEffect(() => {
     const t = setInterval(() => {
       setSecondsLeft((s) => Math.max(0, s - 1));
+      setCancelIn((c) => Math.max(0, c - 1));
     }, 1000);
     return () => clearInterval(t);
   }, []);
+
+  const canCancel = cancelIn === 0 && order.messages.length === 0;
+  const cm = String(Math.floor(cancelIn / 60)).padStart(2, "0");
+  const cs = String(cancelIn % 60).padStart(2, "0");
 
   function handleCopy() {
     navigator.clipboard?.writeText(order.phoneNumber);
@@ -157,6 +167,28 @@ export function ActiveNumberPanel({
               </motion.div>
             ))}
           </AnimatePresence>
+        </div>
+
+        {/* Cancel & refund - unlocks after the wait, only while no code yet */}
+        <div className="mt-3 border-t border-border pt-3">
+          {order.messages.length > 0 ? (
+            <p className="text-center text-[11.5px] text-muted-foreground">
+              Code received - this number can't be refunded.
+            </p>
+          ) : canCancel ? (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={onRelease}
+              className="w-full text-destructive hover:bg-destructive/5"
+            >
+              Cancel &amp; refund
+            </Button>
+          ) : (
+            <Button variant="secondary" size="sm" disabled className="w-full">
+              You can cancel in {cm}:{cs}
+            </Button>
+          )}
         </div>
       </div>
     </motion.div>
