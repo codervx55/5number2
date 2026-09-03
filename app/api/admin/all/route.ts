@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAdminUser } from "@/lib/admin";
+import { getUsdToNgnRate } from "@/lib/exchange-rate";
 
 /**
  * GET /api/admin/all
@@ -35,6 +36,7 @@ export async function GET() {
     users,
     orders,
     txns,
+    ngnRate,
   ] = await Promise.all([
     prisma.user.count(),
     prisma.user.aggregate({ _sum: { walletBalance: true } }),
@@ -66,6 +68,7 @@ export async function GET() {
       orderBy: { createdAt: "desc" },
       include: { user: { select: { email: true } } },
     }),
+    getUsdToNgnRate().catch(() => 1700),
   ]);
 
   const num = (v: any) => Number(v ?? 0);
@@ -85,6 +88,7 @@ export async function GET() {
       topups: num(topupAgg._sum.amount),
       refunds: num(refundAgg._sum.amount),
       siteViews: num(siteStats?.totalViews),
+      ngnRate: num(ngnRate),
     },
     users: users.map((u) => ({
       email: u.email,
