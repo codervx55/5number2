@@ -70,7 +70,23 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Insufficient balance." }, { status: 402 });
       }
 
-      const bought = await buyFivesimNumber(slug, product, info.operator);
+      // Try the cheapest in-stock operator first. If 5sim says "no free
+      // phones" for that specific operator, retry with "any" so 5sim picks
+      // any available number - far more likely to succeed. We still charged
+      // the cheap price; the small chance "any" costs us a bit more is
+      // absorbed by the 50% 5sim margin, and a completed sale beats a failed
+      // one.
+      let bought;
+      try {
+        bought = await buyFivesimNumber(slug, product, info.operator);
+      } catch (firstErr: any) {
+        const msg = String(firstErr?.message ?? "");
+        if (msg.toLowerCase().includes("no free phones")) {
+          bought = await buyFivesimNumber(slug, product, "any");
+        } else {
+          throw firstErr;
+        }
+      }
       providerOrderId = bought.providerOrderId;
       phoneNumber = bought.phoneNumber;
     } else {
@@ -134,8 +150,15 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ order });
-  } catch (err) {
+  } catch (err: any) {
     console.error("Order creation failed:", err);
+    const msg = String(err?.message ?? "").toLowerCase();
+    if (msg.includes("no free phones") || msg.includes("out of stock")) {
+      return NextResponse.json(
+        { error: "That number just sold out. Please try another country or service." },
+        { status: 409 }
+      );
+    }
     return NextResponse.json({ error: "Failed to complete purchase." }, { status: 502 });
   }
 }
