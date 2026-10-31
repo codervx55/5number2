@@ -32,6 +32,9 @@ function BuyPointsPageInner() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // USD -> NGN rate, used only to preview what the user will be charged.
+  const [rate, setRate] = useState<number | null>(null);
+
   // Set when the user comes back from Paystack - we poll until the webhook
   // credits them, since the redirect can arrive before the payment settles.
   const [confirming, setConfirming] = useState(false);
@@ -39,6 +42,12 @@ function BuyPointsPageInner() {
 
   const amountUsd = Number(amount);
   const valid = Number.isFinite(amountUsd) && amountUsd >= MIN_USD;
+
+  // Same maths as the server (round to cents, then round naira up) so the
+  // preview matches the real charge.
+  const amountNgn =
+    valid && rate ? Math.ceil(Number(amountUsd.toFixed(2)) * rate) : null;
+  const ngnFormat = (n: number) => `₦${n.toLocaleString("en-NG")}`;
 
   async function loadBalance() {
     try {
@@ -56,8 +65,21 @@ function BuyPointsPageInner() {
     }
   }
 
+  async function loadRate() {
+    try {
+      const res = await fetch("/api/wallet/rate");
+      if (res.ok) {
+        const data = await res.json();
+        if (Number.isFinite(data.rate) && data.rate > 0) setRate(data.rate);
+      }
+    } catch (err) {
+      console.error("Failed to load rate:", err);
+    }
+  }
+
   useEffect(() => {
     loadBalance();
+    loadRate();
   }, []);
 
   // --- Poll for confirmation after returning from Paystack ---------------
@@ -212,9 +234,25 @@ function BuyPointsPageInner() {
             />
           </div>
           <p className="mt-1.5 text-[12px] text-muted-foreground">
-            Minimum ${MIN_USD.toFixed(2)}. You&apos;ll be charged the naira equivalent at
-            today&apos;s rate.
+            Minimum ${MIN_USD.toFixed(2)}.
           </p>
+
+          {/* Naira preview */}
+          {valid && (
+            <div className="mt-3 rounded-md border border-border bg-muted/40 px-3 py-2.5">
+              <div className="flex items-baseline justify-between gap-3">
+                <span className="text-[12.5px] text-muted-foreground">You&apos;ll be charged</span>
+                <span className="text-[15px] font-semibold text-foreground">
+                  {amountNgn !== null ? `≈ ${ngnFormat(amountNgn)}` : "…"}
+                </span>
+              </div>
+              <p className="mt-1 text-[11.5px] leading-snug text-muted-foreground">
+                {rate ? `Rate: $1 = ${ngnFormat(Math.round(rate))}. ` : ""}
+                Payments are processed in Nigerian naira. If your card or bank uses another
+                currency, they&apos;ll convert it at their own rate.
+              </p>
+            </div>
+          )}
 
           {/* Payment method */}
           <p className="mb-2 mt-5 text-[13px] font-semibold text-foreground">Payment method</p>
@@ -260,7 +298,11 @@ function BuyPointsPageInner() {
             className="mt-5 w-full"
             size="lg"
           >
-            {submitting ? "Starting…" : `Pay $${valid ? amountUsd.toFixed(2) : "0.00"}`}
+            {submitting
+              ? "Starting…"
+              : `Pay $${valid ? amountUsd.toFixed(2) : "0.00"}${
+                  amountNgn !== null ? ` (≈ ${ngnFormat(amountNgn)})` : ""
+                }`}
           </Button>
           <p className="mt-2 text-center text-[11.5px] text-muted-foreground">
             Payments are processed securely by Paystack.
